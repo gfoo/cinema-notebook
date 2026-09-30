@@ -5,30 +5,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cinéma</title>
 <style>
-:root{font-family:system-ui,-apple-system,sans-serif;color:#171717;background:#f5f3ef}
-*{box-sizing:border-box}body{margin:0}.app{max-width:900px;margin:auto;padding:48px 24px}
-h1{font-size:2.4rem;margin:0 0 8px}.intro{color:#666;margin:0 0 32px}
-.grid{display:grid;gap:14px}.film{background:white;border:1px solid #ddd8d0;border-radius:14px;padding:20px 22px;display:flex;justify-content:space-between;align-items:center;gap:20px}
-.title{font-size:1.2rem;font-weight:650}.year{color:#777;margin-left:8px}.status{border:0;border-radius:999px;padding:9px 14px;font:inherit;cursor:pointer;background:#eee9e1;color:#333}.status.seen{background:#dcebdc}.status.to_watch{background:#e9e2d5}
-@media(max-width:600px){.app{padding:30px 16px}.film{align-items:flex-start;flex-direction:column}.status{width:100%}}
+:root{font-family:system-ui,-apple-system,sans-serif;color:#171717;background:#f5f3ef}*{box-sizing:border-box}body{margin:0}.app{max-width:980px;margin:auto;padding:42px 24px}h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 28px}.filters{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px;margin-bottom:20px}select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radius:10px;background:white}.grid{display:grid;gap:12px}.film{background:white;border:1px solid #ddd8d0;border-radius:14px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:20px}.title{font-size:1.15rem;font-weight:650}.meta{color:#777;margin-top:4px;font-size:.92rem}.status{border:0;border-radius:999px;padding:8px 13px;font:inherit;cursor:pointer}.seen{background:#dcebdc}.to_watch{background:#e9e2d5}.empty{color:#777;padding:25px 0}@media(max-width:650px){.filters{grid-template-columns:1fr}.film{align-items:flex-start;flex-direction:column}.status{width:100%}}
 </style>
 </head>
 <body>
 <main class="app">
 <h1>🎬 Cinéma</h1>
-<p class="intro">Mon carnet de films — pour l'instant, deux films.</p>
+<p class="intro">Mon carnet de films</p>
+<div class="filters"><input id="author" placeholder="Filtrer par auteur…"><select id="year"><option value="">Toutes les années</option></select><select id="status"><option value="">Tous les statuts</option><option value="seen">Vu</option><option value="to_watch">À voir</option></select></div>
 <section class="grid" id="films"></section>
 </main>
 <script>
-const films=[
- {titre:"Blade Runner",année:1982,statut:"seen"},
- {titre:"Blade Runner 2049",année:2017,statut:"to_watch"}
-];
-const labels={seen:"Vu",to_watch:"À voir"};
-const root=document.querySelector("#films");
-function render(){root.innerHTML=films.map((f,i)=>`<article class="film"><div><span class="title">${f.titre}</span><span class="year">${f.année}</span></div><button class="status ${f.statut}" onclick="toggle(${i})">${labels[f.statut]}</button></article>`).join("")}
-function toggle(i){films[i].statut=films[i].statut==="seen"?"to_watch":"seen";render()}
-render();
+const films=[{id:"blade-runner-1982",titre:"Blade Runner",année:1982,auteur:"Ridley Scott",statut:"seen",certitude:"certaine"},{id:"blade-runner-2049",titre:"Blade Runner 2049",année:2017,auteur:"Denis Villeneuve",statut:"to_watch",certitude:"certaine"}];
+const labels={seen:"Vu",to_watch:"À voir"};const author=document.querySelector("#author"),year=document.querySelector("#year"),status=document.querySelector("#status"),root=document.querySelector("#films");
+[...new Set(films.map(f=>f.année))].sort((a,b)=>a-b).forEach(y=>year.insertAdjacentHTML("beforeend",`<option value="${y}">${y}</option>`));
+function render(){const a=author.value.toLowerCase(),y=year.value,s=status.value;const list=films.filter(f=>(!a||f.auteur.toLowerCase().includes(a))&&(!y||String(f.année)===y)&&(!s||f.statut===s));root.innerHTML=list.length?list.map(f=>`<article class="film"><div><div class="title">${f.titre} <span class="meta">(${f.année})</span></div><div class="meta">${f.auteur}</div></div><button class="status ${f.statut}">${labels[f.statut]}</button></article>`).join(""):'<div class="empty">Aucun film.</div>'} [author,year,status].forEach(e=>e.addEventListener("input",render));render();
 </script>
 </body>
 </html>
