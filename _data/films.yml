@@ -3,6 +3,7 @@ films:
     titre: Blade Runner
     année: 1982
     auteur: Ridley Scott
+    acteurs_principaux: Harrison Ford, Rutger Hauer, Sean Young
     statut: seen
     date_vue: inconnue
     thumb_url: https://image.tmdb.org/t/p/w300_and_h450_bestv2/63N9uy8nd9j7Eog2axPQ8lbr3Wj.jpg
@@ -16,6 +17,7 @@ films:
     titre: Blade Runner 2049
     année: 2017
     auteur: Denis Villeneuve
+    acteurs_principaux: Ryan Gosling, Harrison Ford, Ana de Armas
     statut: seen
     date_vue: inconnue
     thumb_url: https://image.tmdb.org/t/p/w300_and_h450_bestv2/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg
@@ -24,10 +26,12 @@ films:
       - https://www.imdb.com/title/tt1856101/
       - https://www.themoviedb.org/movie/335984-blade-runner-2049
       - https://letterboxd.com/film/blade-runner-2049/
+
   - id: heart-of-the-beast-2026
     titre: Heart of the Beast
     année: 2026
     auteur: David Ayer
+    acteurs_principaux: Brad Pitt, J.K. Simmons, Anna Lambe
     statut: to_watch
     date_vue: inconnue
     thumb_url: https://media.senscritique.com/media/000023867590/0/heart_of_the_beast.jpg
