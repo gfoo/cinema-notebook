@@ -125,7 +125,30 @@ L'utilisateur peut travailler dans plusieurs conversations thématiques (par exe
 
 ## Tâche de consolidation
 
-Une tâche de **consolidation** parcourt les `url_sources` et les `thumb_url` du catalogue et vérifie pour l'instant simplement que les URL sont valides et accessibles. Elle ne doit pas encore enrichir automatiquement les fiches avec des informations externes.
+La **consolidation** sert à compléter ou vérifier une métadonnée précise du catalogue, et non à enrichir automatiquement toutes les fiches.
+
+Elle est ciblée par métadonnée, par exemple :
+
+- **vignettes** : vérifier les `thumb_url`, rechercher une vignette lorsqu'elle manque ou est invalide ;
+- **acteurs principaux** : vérifier ou compléter la liste des acteurs principaux ;
+- toute autre métadonnée explicitement demandée par l'utilisateur.
+
+### Règles de consolidation
+
+1. L'utilisateur indique ce qu'il veut consolider : par exemple « consolide les vignettes » ou « consolide les acteurs principaux ».
+2. La consolidation porte uniquement sur cette métadonnée.
+3. Si la métadonnée demandée **n'existe pas encore dans le modèle**, ne pas inventer son nom, sa structure ou ses valeurs : demander d'abord à l'utilisateur comment il souhaite la nommer et la structurer.
+4. Si la métadonnée existe déjà, compléter les fiches où elle manque et corriger les valeurs manifestement invalides, en s'appuyant sur des sources externes fiables.
+5. Ne pas ajouter automatiquement d'autres métadonnées découvertes pendant la consolidation.
+6. Ne pas considérer une information externe comme certaine lorsqu'elle est ambiguë : demander à l'utilisateur lorsque le choix ne peut pas être établi proprement.
+7. Après une consolidation, vérifier les modifications effectuées et résumer précisément ce qui a été ajouté ou corrigé.
+
+Exemples :
+
+- « consolide les vignettes » → travailler uniquement sur `thumb_url`.
+- « consolide les acteurs principaux » → si le champ n'existe pas encore, demander d'abord le nom et la structure souhaités.
+- « consolide les sources » → travailler uniquement sur `url_sources`.
+
 
 ## Historique Git
 
