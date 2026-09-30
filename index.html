@@ -91,7 +91,8 @@ function applyFilters(){
   const q=author.value.trim().toLowerCase(),y=year.value,s=status.value;
   filtered=films.filter(f=>{
     const text=[f.titre,f.auteur,f.année,f.statut,labels[f.statut]].filter(v=>v!=null).join(" ").toLowerCase();
-    return (!q||text.includes(q))&&(!y||String(f.année)===y)&&(!s||f.statut===s);\n  });
+    return (!q||text.includes(q))&&(!y||String(f.année)===y )&&(!s||f.statut===s);
+  });
   offset=0;
   root.innerHTML="";
   renderMore();
