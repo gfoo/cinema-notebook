@@ -42,7 +42,7 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 </div>
 
 <div class="filters">
-  <input id="author" placeholder="Filtrer par auteur…">
+  <input id="author" placeholder="Rechercher dans les films…">
   <select id="year"><option value="">Toutes les années</option></select>
   <select id="status"><option value="">Tous les statuts</option><option value="seen">Vu</option><option value="to_watch">À voir</option></select>
 </div>
@@ -88,8 +88,8 @@ function listItem(f){
 }
 function bindListRows(){document.querySelectorAll(".film-row").forEach(row=>{const toggle=()=>{const film=row.closest(".film");const open=film.classList.toggle("open");row.setAttribute("aria-expanded",open)};row.addEventListener("click",toggle);row.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}})})}
 function applyFilters(){
-  const a=author.value.toLowerCase(),y=year.value,s=status.value;
-  filtered=films.filter(f=>(!a||f.auteur.toLowerCase().includes(a))&&(!y||String(f.année)===y)&&(!s||f.statut===s));
+  const q=author.value.trim().toLowerCase(),y=year.value,s=status.value;
+  filtered=films.filter(f=>{\n    const text=[f.titre,f.auteur,f.année,f.statut,labels[f.statut]].filter(v=>v!=null).join(" ").toLowerCase();\n    return (!q||text.includes(q))&&(!y||String(f.année)===y)&&(!s||f.statut===s);\n  });
   offset=0;
   root.innerHTML="";
   renderMore();
