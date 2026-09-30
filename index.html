@@ -42,19 +42,191 @@ h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 <script type="application/json" id="views-list-data">{{ site.data.views.list.visible | jsonify }}</script>
 <script type="application/json" id="views-cards-data">{{ site.data.views.cards.visible | jsonify }}</script>
 <script>
-const out=document.querySelector("#debug-output");
-try {
-  const films=JSON.parse(document.querySelector("#films-data").textContent);
-  const list=JSON.parse(document.querySelector("#views-list-data").textContent);
-  const cards=JSON.parse(document.querySelector("#views-cards-data").textContent);
-  out.textContent="Jekyll → films : "+films.length+
-    "\nJekyll → listVisible : "+JSON.stringify(list)+
-    "\nJekyll → cardsVisible : "+JSON.stringify(cards)+
-    "\n\nPREMIER FILM :\n"+(films[0]?JSON.stringify(films[0],null,2):"(aucun)");
-} catch(e) {
-  out.textContent="ERREUR : "+e.message+
-    "\n\nfilms-data brut :\n"+document.querySelector("#films-data").textContent;
+const labels = { seen: "Vu", to_watch: "À voir" };
+const fieldLabels = { titre:"Titre", année:"Année", auteur:"Auteur", acteurs_principaux:"Acteurs principaux", statut:"Statut", date_vue:"Date de visionnage" };
+
+const films = JSON.parse(document.querySelector("#films-data").textContent);
+const listVisible = JSON.parse(document.querySelector("#views-list-data").textContent);
+const cardsVisible = JSON.parse(document.querySelector("#views-cards-data").textContent);
+
+const root = document.querySelector("#films");
+const search = document.querySelector("#search");
+const statusButton = document.querySelector("#status");
+const viewButtons = document.querySelectorAll("[data-view]");
+const sentinel = document.querySelector("#sentinel");
+const dialog = document.querySelector("#metadata-dialog");
+const dialogBody = document.querySelector("#metadata-body");
+const dialogClose = document.querySelector("#metadata-close");
+
+let currentView = "list";
+let statusIndex = 0;
+let offset = 0;
+const pageSize = 24;
+let filtered = films.slice();
+
+function valueFor(f, key) {
+  return key === "statut" ? (labels[f[key]] || f[key] || "") : (f[key] ?? "");
 }
-</script>>
+
+function sourceLinks(f) {
+  const s = f.sources || {};
+  const links = [
+    s.wikipedia ? {url:s.wikipedia, label:"Wikipedia", icon:"https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/74/4d/87/744d87ec-852d-79a5-22e1-4375bf4108f5/AppIcon-0-1x_U007emarketing-0-0-0-8-0-0-sRGB-85-220-0.png/1200x630wa.png"} : null,
+    s.imdb ? {url:s.imdb, label:"IMDb", icon:"https://images.squarespace-cdn.com/content/v1/63c6e28fd72e1164cb2cdcfd/9794d573-cecc-43ac-8a13-6b666f57cb15/IMDB.png"} : null,
+    s.rotten_tomatoes ? {url:s.rotten_tomatoes, label:"Rotten Tomatoes", icon:"https://fastly.mwm-storage.mwmcdn.com/raw_files/073ee4e9-9ffb-447c-8381-f1956985ed54"} : null
+  ].filter(Boolean);
+  if (!links.length) return "";
+  return '<div class="links">' + links.map(x =>
+    '<a class="source-link" href="' + x.url + '" target="_blank" rel="noopener" aria-label="' + x.label + '" title="' + x.label + '">' +
+    '<img src="' + x.icon + '" alt="" loading="lazy"></a>'
+  ).join("") + '</div>';
+}
+
+function infoButton(f) {
+  return '<button class="info-button" type="button" data-info="' + f.id + '" aria-label="Informations sur ' + f.titre + '" title="Toutes les informations">i</button>';
+}
+
+function visibilityButton(f) {
+  const seen = f.statut === "seen";
+  return '<button class="visibility-button" type="button" data-visibility="' + f.id + '" aria-label="' +
+    (seen ? "Vu" : "À voir") + '" title="' + (seen ? "Vu" : "À voir") + '">' +
+    (seen ? "◉" : "◉̸") + '</button>';
+}
+
+function card(f) {
+  const meta = cardsVisible.filter(k => k === "année" || k === "auteur")
+    .map(k => valueFor(f,k)).filter(Boolean).join(" · ");
+  const status = cardsVisible.includes("statut")
+    ? '<button class="status ' + f.statut + '" type="button">' + labels[f.statut] + '</button>' : "";
+  return '<article class="card">' +
+    '<a href="' + (f.sources?.wikipedia || "#") + '" target="_blank" rel="noopener">' +
+    '<img class="poster" src="' + (f.thumb_url || "") + '" alt="Affiche de ' + f.titre + '" loading="lazy"></a>' +
+    '<div class="card-body">' +
+    (cardsVisible.includes("titre") ? '<div class="title">' + f.titre + '</div>' : "") +
+    (meta ? '<div class="meta">' + meta + '</div>' : "") +
+    '<div class="film-actions">' + status + visibilityButton(f) + infoButton(f) + '</div>' +
+    sourceLinks(f) +
+    '</div></article>';
+}
+
+function listItem(f) {
+  const title = listVisible.includes("titre")
+    ? '<div class="list-title">' + f.titre +
+      (listVisible.includes("année") ? ' <span class="list-meta">(' + f.année + ')</span>' : "") +
+      '</div>' : "";
+  const author = listVisible.includes("auteur")
+    ? '<div class="list-meta">' + f.auteur + '</div>' : "";
+  const status = listVisible.includes("statut")
+    ? '<button class="status ' + f.statut + '" type="button" tabindex="-1">' + labels[f.statut] + '</button>' : "";
+  return '<article class="film" data-id="' + f.id + '">' +
+    '<div class="film-row" role="button" tabindex="0" aria-expanded="false">' +
+    '<div class="film-row-main"><img class="list-thumb" src="' + (f.thumb_url || "") + '" alt="" loading="lazy">' +
+    '<div class="film-row-text">' + title + author + '</div></div>' +
+    '<div class="film-actions">' + status + visibilityButton(f) + infoButton(f) + '</div></div>' +
+    '<div class="film-detail"><img class="poster" src="' + (f.thumb_url || "") + '" alt="Affiche de ' + f.titre + '" loading="lazy">' +
+    '<div class="film-detail-body"><div class="film-detail-title">' + f.titre + '</div>' +
+    '<div class="film-detail-meta">' + f.année + ' · ' + f.auteur +
+    (f.date_vue && f.date_vue !== "inconnue" ? ' · Vu le ' + f.date_vue : "") +
+    '</div>' + sourceLinks(f) + '</div></div></article>';
+}
+
+function renderTimeline(items) {
+  if (!items.length) return '<div class="empty">Aucun film</div>';
+  return '<div class="timeline">' + items.map(f =>
+    '<article class="timeline-item"><div class="timeline-year">' + f.année + '</div>' +
+    '<img class="timeline-thumb" src="' + (f.thumb_url || "") + '" alt="" loading="lazy">' +
+    '<div class="timeline-title">' + f.titre + '</div></article>'
+  ).join("") + '</div>';
+}
+
+function render() {
+  if (currentView === "cards") {
+    root.innerHTML = '<div class="cards">' + filtered.slice(0, offset + pageSize).map(card).join("") + '</div>';
+  } else if (currentView === "timeline") {
+    root.innerHTML = renderTimeline(filtered);
+  } else {
+    root.innerHTML = filtered.slice(0, offset + pageSize).map(listItem).join("") ||
+      '<div class="empty">Aucun film</div>';
+    bindRows();
+  }
+  offset = Math.min(offset + pageSize, filtered.length);
+}
+
+function applyFilters() {
+  const q = (search?.value || "").trim().toLowerCase();
+  const status = ["","seen","to_watch"][statusIndex];
+  filtered = films.filter(f => {
+    const haystack = Object.values(f).filter(v => typeof v === "string" || typeof v === "number")
+      .join(" ").toLowerCase();
+    return (!q || haystack.includes(q)) && (!status || f.statut === status);
+  });
+  offset = 0;
+  render();
+}
+
+function bindRows() {
+  document.querySelectorAll(".film-row").forEach(row => {
+    row.addEventListener("click", event => {
+      if (event.target.closest("button,a")) return;
+      const article = row.closest(".film");
+      const open = article.classList.toggle("open");
+      row.setAttribute("aria-expanded", String(open));
+    });
+    row.addEventListener("keydown", event => {
+      if ((event.key === "Enter" || event.key === " ") && !event.target.closest("button,a")) {
+        event.preventDefault();
+        row.click();
+      }
+    });
+  });
+}
+
+function openInfo(id) {
+  const f = films.find(x => x.id === id);
+  if (!f) return;
+  const excluded = ["id","thumb_url","sources"];
+  dialogBody.innerHTML = Object.keys(f).filter(k => !excluded.includes(k)).map(k =>
+    '<div class="meta-item"><div class="meta-label">' + (fieldLabels[k] || k) +
+    '</div><div>' + (k === "statut" ? labels[f[k]] : (f[k] || "—")) + '</div></div>'
+  ).join("") + sourceLinks(f);
+  dialog.showModal();
+}
+
+search?.addEventListener("input", applyFilters);
+
+statusButton?.addEventListener("click", () => {
+  statusIndex = (statusIndex + 1) % 3;
+  statusButton.textContent = ["Tous","Vu","À voir"][statusIndex];
+  applyFilters();
+});
+
+viewButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    currentView = button.dataset.view;
+    viewButtons.forEach(b => b.classList.toggle("active", b === button));
+    offset = 0;
+    render();
+  });
+});
+
+document.addEventListener("click", event => {
+  const info = event.target.closest("[data-info]");
+  if (info) {
+    event.preventDefault();
+    event.stopPropagation();
+    openInfo(info.dataset.info);
+    return;
+  }
+});
+
+dialogClose?.addEventListener("click", () => dialog.close());
+
+sentinel?.addEventListener("click", () => {
+  if (offset < filtered.length) render();
+});
+
+if (viewButtons.length) viewButtons[0].classList.add("active");
+applyFilters();
+</script>>>
 </body>
 </html>
