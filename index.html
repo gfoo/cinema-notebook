@@ -9,7 +9,7 @@ layout: null
 <title>Cinéma</title>
 <style>
 :root{font-family:system-ui,-apple-system,sans-serif;color:#171717;background:#f5f3ef}
-*{box-sizing:border-box}body{margin:0}.app{max-width:1200px;margin:auto;padding:36px 24px}
+*{box-sizing:border-box}body{margin:0}.app{max-width:1200px;margin:auto;padding:36px 24px}.theme-switch{position:fixed;top:10px;right:12px;width:30px;height:18px;border:1px solid #aaa;border-radius:999px;background:#ddd;padding:2px;cursor:pointer;z-index:20}.theme-switch span{display:block;width:12px;height:12px;border-radius:50%;background:#555;transition:transform .18s}.theme-switch.on span{transform:translateX(12px)}body.gray .app{filter:grayscale(1)}
 h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 .view-switcher{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .view-buttons{display:inline-flex;gap:3px;padding:3px;border:1px solid #d5d0c8;border-radius:11px;background:#eeeae4}
@@ -38,6 +38,7 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 </style>
 </head>
 <body>
+<button id="theme-switch" class="theme-switch" type="button" title="Mode niveaux de gris" aria-label="Activer ou désactiver les niveaux de gris"><span></span></button>
 <main class="app">
 <div class="filters">
   <input id="author" placeholder="Rechercher dans les films…">
@@ -59,6 +60,9 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 
 <script>
 const films={{ site.data.films.films | jsonify }};
+const themeSwitch=document.querySelector("#theme-switch");
+themeSwitch.addEventListener("click",()=>{document.body.classList.toggle("gray");themeSwitch.classList.toggle("on");localStorage.setItem("grayMode",document.body.classList.contains("gray"));});
+if(localStorage.getItem("grayMode")==="true"){document.body.classList.add("gray");themeSwitch.classList.add("on");}
 const viewConfig={{ site.data.views | jsonify }};
 
 const labels={seen:"Vu",to_watch:"À voir"};
