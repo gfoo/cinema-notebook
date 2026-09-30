@@ -16,8 +16,11 @@ h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 .view-button{font:inherit;border:0;background:transparent;border-radius:8px;padding:7px 11px;cursor:pointer;color:#666}
 .view-button.active{background:white;color:#171717;box-shadow:0 1px 3px #0001}
 .view-icon{font-size:1rem}
-.status-filter{font:inherit;border:1px solid #d5d0c8;border-radius:10px;background:white;padding:8px 12px;cursor:pointer;color:#333}
-.status-filter:hover{background:#f0ede8}
+.status-filter{border:0;border-radius:999px;padding:5px 10px;font:inherit;font-size:.8rem;white-space:nowrap;cursor:pointer}
+.status-filter:hover{filter:brightness(.97)}
+.status-filter.all{background:#eeeae4;color:#555}
+.status-filter.seen{background:#dcebdc;color:#333}
+.status-filter.to_watch{background:#e9e2d5;color:#333}
 .filters{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:10px}
 select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radius:10px;background:white}
 .grid{display:grid;gap:4px}.film{background:white;border:1px solid #ddd8d0;border-radius:6px;overflow:hidden}.film-row{min-height:42px;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer}.film-detail{display:none;padding:12px;border-top:1px solid #eee9e2;background:#faf9f7;gap:14px;align-items:flex-start}.film.open .film-detail{display:flex}.film-detail img{width:54px;height:78px;object-fit:cover;border-radius:4px;flex:0 0 auto}.film-detail-body{min-width:0}.film-detail-title{font-weight:650}.film-detail-meta{color:#777;font-size:.84rem;margin-top:3px}.film-detail .links{margin-top:7px}.film-detail .links a{font-size:.78rem}
@@ -58,7 +61,7 @@ const films={{ site.data.films.films | jsonify }};
 
 const labels={seen:"Vu",to_watch:"À voir"};
 const author=document.querySelector("#author"),status=document.querySelector("#status");
-const statusModes=["","seen","to_watch"],statusLabels=["◉ Tous","✓ Vu","○ À voir"];
+const statusModes=["","seen","to_watch"],statusLabels=["Tous","Vu","À voir"];
 let statusIndex=0;
 const root=document.querySelector("#films"),sentinel=document.querySelector("#sentinel");
 let currentView="list",offset=0,pageSize=24,filtered=[];
@@ -135,9 +138,11 @@ function setView(view){
 }
 document.querySelectorAll(".view-button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
 author.addEventListener("input",applyFilters);
-status.addEventListener("click",()=>{statusIndex=(statusIndex+1)%statusModes.length;status.textContent=statusLabels[statusIndex];applyFilters()});
+function updateStatusButton(){status.textContent=statusLabels[statusIndex];status.className="status-filter "+(statusModes[statusIndex]||"all")}
+status.addEventListener("click",()=>{statusIndex=(statusIndex+1)%statusModes.length;updateStatusButton();applyFilters()});
 const observer=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&currentView!=="timeline"&&offset<filtered.length)renderMore();},{rootMargin:"400px"});
 observer.observe(sentinel);
+updateStatusButton();
 applyFilters();
 </script>
 </body>
