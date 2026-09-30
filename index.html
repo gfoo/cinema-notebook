@@ -5,21 +5,141 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cinéma</title>
 <style>
-:root{font-family:system-ui,-apple-system,sans-serif;color:#171717;background:#f5f3ef}*{box-sizing:border-box}body{margin:0}.app{max-width:980px;margin:auto;padding:42px 24px}h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 28px}.filters{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px;margin-bottom:20px}select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radius:10px;background:white}.grid{display:grid;gap:12px}.film{background:white;border:1px solid #ddd8d0;border-radius:14px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:20px}.title{font-size:1.15rem;font-weight:650}.meta{color:#777;margin-top:4px;font-size:.92rem}.status{border:0;border-radius:999px;padding:8px 13px;font:inherit;cursor:pointer}.seen{background:#dcebdc}.to_watch{background:#e9e2d5}.empty{color:#777;padding:25px 0}@media(max-width:650px){.filters{grid-template-columns:1fr}.film{align-items:flex-start;flex-direction:column}.status{width:100%}}
+:root{font-family:system-ui,-apple-system,sans-serif;color:#171717;background:#f5f3ef}
+*{box-sizing:border-box}body{margin:0}.app{max-width:1200px;margin:auto;padding:36px 24px}
+h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.view-button{font:inherit;border:1px solid #d5d0c8;background:white;border-radius:10px;padding:9px 13px;cursor:pointer}
+.view-button.active{background:#171717;color:white;border-color:#171717}
+.filters{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px;margin-bottom:20px}
+select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radius:10px;background:white}
+.grid{display:grid;gap:12px}.film{background:white;border:1px solid #ddd8d0;border-radius:14px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.title{font-size:1.15rem;font-weight:650}.meta{color:#777;margin-top:4px;font-size:.92rem}
+.status{border:0;border-radius:999px;padding:8px 13px;font:inherit}.seen{background:#dcebdc}.to_watch{background:#e9e2d5}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px}
+.card{background:white;border:1px solid #ddd8d0;border-radius:14px;overflow:hidden}.poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:#e8e5df;display:block}
+.card-body{padding:12px}.card .title{font-size:1rem}.card .status{margin-top:10px;font-size:.85rem;padding:6px 10px}
+.timeline-wrap{overflow-x:auto;padding-bottom:12px}.timeline{display:flex;gap:14px;min-width:max-content;align-items:flex-start}
+.year-column{width:170px;flex:0 0 170px}.year{font-size:1.35rem;font-weight:700;padding:8px 4px 12px;border-bottom:2px solid #171717;margin-bottom:12px}
+.year-films{display:grid;gap:14px}.timeline .card{width:170px}
+.empty{color:#777;padding:25px 0}.sentinel{height:20px}
+.links{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}.links a{font-size:.8rem;color:#555}
+@media(max-width:650px){.filters{grid-template-columns:1fr}.film{align-items:flex-start;flex-direction:column}.status{width:100%}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <main class="app">
 <h1>🎬 Cinéma</h1>
 <p class="intro">Mon carnet de films</p>
-<div class="filters"><input id="author" placeholder="Filtrer par auteur…"><select id="year"><option value="">Toutes les années</option></select><select id="status"><option value="">Tous les statuts</option><option value="seen">Vu</option><option value="to_watch">À voir</option></select></div>
-<section class="grid" id="films"></section>
+
+<div class="toolbar" aria-label="Vue">
+  <button class="view-button active" data-view="list">Liste</button>
+  <button class="view-button" data-view="cards">Vignettes</button>
+  <button class="view-button" data-view="timeline">Frise</button>
+</div>
+
+<div class="filters">
+  <input id="author" placeholder="Filtrer par auteur…">
+  <select id="year"><option value="">Toutes les années</option></select>
+  <select id="status"><option value="">Tous les statuts</option><option value="seen">Vu</option><option value="to_watch">À voir</option></select>
+</div>
+
+<section id="films"></section>
+<div id="sentinel" class="sentinel"></div>
 </main>
+
 <script>
-const films=[{id:"blade-runner-1982",titre:"Blade Runner",année:1982,auteur:"Ridley Scott",statut:"seen",certitude:"certaine"},{id:"blade-runner-2049",titre:"Blade Runner 2049",année:2017,auteur:"Denis Villeneuve",statut:"to_watch",certitude:"certaine"}];
-const labels={seen:"Vu",to_watch:"À voir"};const author=document.querySelector("#author"),year=document.querySelector("#year"),status=document.querySelector("#status"),root=document.querySelector("#films");
+const films=[
+  {
+    id:"blade-runner-1982",titre:"Blade Runner",année:1982,auteur:"Ridley Scott",statut:"seen",date_vue:"inconnue",
+    thumb_url:"https://image.tmdb.org/t/p/w300_and_h450_bestv2/63N9uy8nd9j7Eog2axPQ8lbr3Wj.jpg",
+    url_sources:[
+      "https://fr.wikipedia.org/wiki/Blade_Runner_%28film%29",
+      "https://www.imdb.com/title/tt0083658/",
+      "https://www.themoviedb.org/movie/78-blade-runner",
+      "https://letterboxd.com/film/blade-runner/"
+    ]
+  },
+  {
+    id:"blade-runner-2049",titre:"Blade Runner 2049",année:2017,auteur:"Denis Villeneuve",statut:"seen",date_vue:"inconnue",
+    thumb_url:"https://image.tmdb.org/t/p/w300_and_h450_bestv2/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg",
+    url_sources:[
+      "https://fr.wikipedia.org/wiki/Blade_Runner_2049",
+      "https://www.imdb.com/title/tt1856101/",
+      "https://www.themoviedb.org/movie/335984-blade-runner-2049",
+      "https://letterboxd.com/film/blade-runner-2049/"
+    ]
+  }
+];
+
+const labels={seen:"Vu",to_watch:"À voir"};
+const author=document.querySelector("#author"),year=document.querySelector("#year"),status=document.querySelector("#status");
+const root=document.querySelector("#films"),sentinel=document.querySelector("#sentinel");
+let currentView="list",offset=0,pageSize=24,filtered=[];
+
 [...new Set(films.map(f=>f.année))].sort((a,b)=>a-b).forEach(y=>year.insertAdjacentHTML("beforeend",`<option value="${y}">${y}</option>`));
-function render(){const a=author.value.toLowerCase(),y=year.value,s=status.value;const list=films.filter(f=>(!a||f.auteur.toLowerCase().includes(a))&&(!y||String(f.année)===y)&&(!s||f.statut===s));root.innerHTML=list.length?list.map(f=>`<article class="film"><div><div class="title">${f.titre} <span class="meta">(${f.année})</span></div><div class="meta">${f.auteur}</div></div><button class="status ${f.statut}">${labels[f.statut]}</button></article>`).join(""):'<div class="empty">Aucun film.</div>'} [author,year,status].forEach(e=>e.addEventListener("input",render));render();
+
+function sourceLinks(f){
+  return f.url_sources?.length
+    ? `<div class="links">${f.url_sources.map((u,i)=>`<a href="${u}" target="_blank" rel="noopener">${i===0?"Wikipedia":"Source "+i}</a>`).join("")}</div>`
+    : "";
+}
+function card(f){
+  return `<article class="card">
+    <a href="${f.url_sources?.[0]||"#"}" target="_blank" rel="noopener"><img class="poster" src="${f.thumb_url||""}" alt="Affiche de ${f.titre}" loading="lazy"></a>
+    <div class="card-body">
+      <div class="title">${f.titre}</div>
+      <div class="meta">${f.année} · ${f.auteur}</div>
+      <button class="status ${f.statut}">${labels[f.statut]}</button>
+      ${sourceLinks(f)}
+    </div>
+  </article>`;
+}
+function listItem(f){
+  return `<article class="film">
+    <div><div class="title">${f.titre} <span class="meta">(${f.année})</span></div><div class="meta">${f.auteur}</div></div>
+    <button class="status ${f.statut}">${labels[f.statut]}</button>
+  </article>`;
+}
+function applyFilters(){
+  const a=author.value.toLowerCase(),y=year.value,s=status.value;
+  filtered=films.filter(f=>(!a||f.auteur.toLowerCase().includes(a))&&(!y||String(f.année)===y)&&(!s||f.statut===s));
+  offset=0;
+  root.innerHTML="";
+  renderMore();
+}
+function renderMore(){
+  if(currentView==="timeline"){renderTimeline();return;}
+  const batch=filtered.slice(offset,offset+pageSize);
+  if(offset===0 && !batch.length){root.innerHTML='<div class="empty">Aucun film.</div>';return;}
+  if(currentView==="list"){
+    if(offset===0) root.innerHTML='<div class="grid" id="view-content"></div>';
+    document.querySelector("#view-content").insertAdjacentHTML("beforeend",batch.map(listItem).join(""));
+  } else {
+    if(offset===0) root.innerHTML='<div class="cards" id="view-content"></div>';
+    document.querySelector("#view-content").insertAdjacentHTML("beforeend",batch.map(card).join(""));
+  }
+  offset+=batch.length;
+}
+function renderTimeline(){
+  if(!filtered.length){root.innerHTML='<div class="empty">Aucun film.</div>';return;}
+  const years=[...new Set(filtered.map(f=>f.année))].sort((a,b)=>a-b);
+  root.innerHTML='<div class="timeline-wrap"><div class="timeline">'+years.map(y=>`
+    <section class="year-column">
+      <div class="year">${y}</div>
+      <div class="year-films">${filtered.filter(f=>f.année===y).map(card).join("")}</div>
+    </section>`).join("")+'</div></div>';
+}
+function setView(view){
+  currentView=view;
+  document.querySelectorAll(".view-button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
+  applyFilters();
+}
+document.querySelectorAll(".view-button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
+[author,year,status].forEach(e=>e.addEventListener("input",applyFilters));
+const observer=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&currentView!=="timeline"&&offset<filtered.length)renderMore();},{rootMargin:"400px"});
+observer.observe(sentinel);
+applyFilters();
 </script>
 </body>
 </html>
