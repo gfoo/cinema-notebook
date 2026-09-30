@@ -30,7 +30,7 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 .year-column{width:170px;flex:0 0 170px}.year{font-size:1.35rem;font-weight:700;padding:8px 4px 12px;border-bottom:2px solid #171717;margin-bottom:12px}
 .year-films{display:grid;gap:14px}.timeline .card{width:170px}
 .empty{color:#777;padding:25px 0}.sentinel{height:20px}
-.links{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}.source-link{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d5d0c8;border-radius:8px;background:white;color:#333;text-decoration:none;font-size:.72rem;font-weight:700}.source-link:hover{background:#f0ede8}.source-link.imdb{font-size:.48rem;letter-spacing:-.03em}.source-link.tomato{font-size:1rem}
+.links{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}.source-link{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d5d0c8;border-radius:8px;background:white;text-decoration:none;overflow:hidden}.source-link:hover{background:#f0ede8}.source-link img{width:22px;height:22px;object-fit:cover;border-radius:6px;display:block}.source-link.imdb img{width:24px;height:24px}.source-link.tomato img{width:24px;height:24px}
 @media(max-width:650px){.view-switcher{gap:10px}.view-button{padding:7px 9px}.film-row{padding:7px 10px}.film-detail{padding:10px}.status{padding:5px 9px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
@@ -66,12 +66,12 @@ let currentView="list",offset=0,pageSize=24,filtered=[];
 function sourceLinks(f){
   const s=f.sources||{};
   const links=[
-    s.wikipedia?['Ⓦ','Wikipedia','']:null,
-    s.imdb?['IMDb','IMDb','imdb']:null,
-    s.rotten_tomatoes?['🍅','Rotten Tomatoes','tomato']:null
+    s.wikipedia?['https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/74/4d/87/744d87ec-852d-79a5-22e1-4375bf4108f5/AppIcon-0-1x_U007emarketing-0-0-0-8-0-0-sRGB-85-220-0.png/1200x630wa.png','Wikipedia','']:null,
+    s.imdb?['https://images.squarespace-cdn.com/content/v1/63c6e28fd72e1164cb2cdcfd/9794d573-cecc-43ac-8a13-6b666f57cb15/IMDB.png','IMDb','imdb']:null,
+    s.rotten_tomatoes?['https://fastly.mwm-storage.mwmcdn.com/raw_files/073ee4e9-9ffb-447c-8381-f1956985ed54','Rotten Tomatoes','tomato']:null
   ].filter(Boolean);
   return links.length
-    ? `<div class="links">${links.map(([icon,label,cls])=>`<a class="source-link ${cls}" href="${s[label==='Wikipedia'?'wikipedia':label==='IMDb'?'imdb':'rotten_tomatoes']}" target="_blank" rel="noopener" aria-label="${label}" title="${label}">${icon}</a>`).join("")}</div>`
+    ? `<div class="links">${links.map(([icon,label,cls])=>`<a class="source-link ${cls}" href="${s[label==='Wikipedia'?'wikipedia':label==='IMDb'?'imdb':'rotten_tomatoes']}" target="_blank" rel="noopener" aria-label="${label}" title="${label}"><img src="${icon}" alt="" loading="lazy"></a>`).join("")}</div>`
     : "";
 }
 function card(f){
