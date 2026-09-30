@@ -60,6 +60,8 @@ Pour l'instant, `date_vue` représente la date de la dernière vision connue. Ne
 
 Ne pas enrichir le modèle de données spontanément.
 
+Les métadonnées d'affichage et les sources externes peuvent être ajoutées lorsqu'elles répondent à un besoin du site. Elles restent simples et ne doivent pas devenir une base de données externe.
+
 Ne pas ajouter sans demande explicite :
 
 - genres
@@ -97,6 +99,16 @@ Le site est déployé via GitHub Pages.
 
 Le site est pour l'instant principalement une **interface de consultation**.
 
+### Vues
+
+Le site propose trois vues :
+
+- `Liste` : vue textuelle existante, avec défilement infini ;
+- `Vignettes` : affichage par affiches/vignettes, avec défilement infini ;
+- `Frise` : années organisées en colonnes horizontales, avec défilement horizontal.
+
+Les vues Liste et Vignettes utilisent un chargement progressif côté interface. La Frise n'utilise pas le défilement infini.
+
 Ne pas introduire une authentification GitHub ou une API d'écriture simplement pour ajouter des boutons d'édition. ChatGPT peut modifier le dépôt directement lorsque l'utilisateur lui demande de modifier le catalogue.
 
 ## Workflow avec l'utilisateur
@@ -110,6 +122,10 @@ Lorsqu'une conversation permet d'identifier ou de qualifier un film :
 5. faire un commit GitHub avec un message clair.
 
 L'utilisateur peut travailler dans plusieurs conversations thématiques (par exemple science-fiction, Nouvelle Vague, remise en mémoire, réalisateur, etc.). Toutes ces conversations alimentent le même catalogue canonique.
+
+## Tâche de consolidation
+
+Une tâche de **consolidation** parcourt les `url_sources` du catalogue et vérifie pour l'instant simplement que les URL sont valides et accessibles. Elle ne doit pas encore enrichir automatiquement les fiches avec des informations externes.
 
 ## Historique Git
 
