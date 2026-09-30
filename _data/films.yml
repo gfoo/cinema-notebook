@@ -24,3 +24,15 @@ films:
       - https://www.imdb.com/title/tt1856101/
       - https://www.themoviedb.org/movie/335984-blade-runner-2049
       - https://letterboxd.com/film/blade-runner-2049/
+  - id: heart-of-the-beast-2026
+    titre: Heart of the Beast
+    année: 2026
+    auteur: David Ayer
+    statut: to_watch
+    date_vue: inconnue
+    thumb_url: https://media.senscritique.com/media/000023867590/0/heart_of_the_beast.jpg
+    url_sources:
+      - https://www.paramountpictures.fr/film/heart-of-the-beast/
+      - https://www.imdb.com/title/tt7526136/
+      - https://www.senscritique.com/film/heart_of_the_beast/105681196
+      - https://letterboxd.com/search/films/Heart%20of%20the%20Beast/
