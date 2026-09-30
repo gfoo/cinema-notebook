@@ -1,0 +1,13 @@
+list:
+  visible:
+    - titre
+    - année
+    - auteur
+    - statut
+
+cards:
+  visible:
+    - titre
+    - année
+    - auteur
+    - statut
