@@ -11,14 +11,15 @@ layout: null
 :root{font-family:system-ui,-apple-system,sans-serif;color:#171717;background:#f5f3ef}
 *{box-sizing:border-box}body{margin:0}.app{max-width:1200px;margin:auto;padding:36px 24px}
 h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
-.view-switcher{display:inline-flex;gap:3px;padding:3px;border:1px solid #d5d0c8;border-radius:11px;background:#eeeae4;margin-bottom:20px}
+.view-switcher{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.view-buttons{display:inline-flex;gap:3px;padding:3px;border:1px solid #d5d0c8;border-radius:11px;background:#eeeae4}
 .view-button{font:inherit;border:0;background:transparent;border-radius:8px;padding:7px 11px;cursor:pointer;color:#666}
 .view-button.active{background:white;color:#171717;box-shadow:0 1px 3px #0001}
-.view-icon{font-size:1rem;margin-right:5px}
-.filters{display:grid;grid-template-columns:1fr auto;gap:10px;margin-bottom:10px}
-select,input,.status-filter{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radius:10px;background:white}
-.status-filter{cursor:pointer;min-width:92px;text-align:center;color:#333}
+.view-icon{font-size:1rem}
+.status-filter{font:inherit;border:1px solid #d5d0c8;border-radius:10px;background:white;padding:8px 12px;cursor:pointer;color:#333}
 .status-filter:hover{background:#f0ede8}
+.filters{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:10px}
+select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radius:10px;background:white}
 .grid{display:grid;gap:4px}.film{background:white;border:1px solid #ddd8d0;border-radius:6px;overflow:hidden}.film-row{min-height:42px;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer}.film-detail{display:none;padding:12px;border-top:1px solid #eee9e2;background:#faf9f7;gap:14px;align-items:flex-start}.film.open .film-detail{display:flex}.film-detail img{width:54px;height:78px;object-fit:cover;border-radius:4px;flex:0 0 auto}.film-detail-body{min-width:0}.film-detail-title{font-weight:650}.film-detail-meta{color:#777;font-size:.84rem;margin-top:3px}.film-detail .links{margin-top:7px}.film-detail .links a{font-size:.78rem}
 .list-title{font-size:1rem;font-weight:600;line-height:1.2}.list-meta{color:#777;font-size:.82rem;margin-top:2px}
 .status{border:0;border-radius:999px;padding:5px 10px;font:inherit;font-size:.8rem;white-space:nowrap}.seen{background:#dcebdc}.to_watch{background:#e9e2d5}
@@ -30,23 +31,20 @@ select,input,.status-filter{font:inherit;padding:11px 13px;border:1px solid #d5d
 .year-films{display:grid;gap:14px}.timeline .card{width:170px}
 .empty{color:#777;padding:25px 0}.sentinel{height:20px}
 .links{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}.source-link{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d5d0c8;border-radius:8px;background:white;color:#333;text-decoration:none;font-size:.72rem;font-weight:700}.source-link:hover{background:#f0ede8}.source-link.imdb{font-size:.6rem}.source-link.tomato{font-size:1rem}
-@media(max-width:650px){.filters{grid-template-columns:1fr}.status-filter{justify-self:end}.film-row{padding:7px 10px}.film-detail{padding:10px}.status{padding:5px 9px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.view-switcher{gap:10px}.view-button{padding:7px 9px}.film-row{padding:7px 10px}.film-detail{padding:10px}.status{padding:5px 9px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
 <main class="app">
-<h1>🎬 Cinéma</h1>
-<p class="intro">Mon carnet de films</p>
-
 <div class="filters">
   <input id="author" placeholder="Rechercher dans les films…">
+  >
+  <div class="view-buttons" role="group" aria-label="Vue">
+    <button class="view-button active" data-view="list" title="Liste" aria-label="Liste"><span class="view-icon">☷</span></button>
+    <button class="view-button" data-view="cards" title="Vignettes" aria-label="Vignettes"><span class="view-icon">▦</span></button>
+    <button class="view-button" data-view="timeline" title="Frise" aria-label="Frise"><span class="view-icon">─</span></button>
+  </div>
   <button id="status" class="status-filter" type="button" title="Filtrer par statut" aria-label="Filtre de statut">◉ Tous</button>
-</div>
-
-<div class="view-switcher" role="group" aria-label="Vue">
-  <button class="view-button active" data-view="list" title="Liste"><span class="view-icon">☷</span>Liste</button>
-  <button class="view-button" data-view="cards" title="Vignettes"><span class="view-icon">▦</span>Vignettes</button>
-  <button class="view-button" data-view="timeline" title="Frise"><span class="view-icon">─</span>Frise</button>
 </div>
 
 <section id="films"></section>
