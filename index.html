@@ -21,7 +21,7 @@ h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 .visibility-button{width:28px;height:28px;border:1px solid #d5d0c8;border-radius:50%;background:white;color:#666;font-size:15px;line-height:1;cursor:pointer;padding:0}.visibility-button:hover,.info-button:hover{background:#f0ede8}
 .meta-dialog{width:min(520px,calc(100% - 32px));border:1px solid #d5d0c8;border-radius:14px;padding:0;background:white;box-shadow:0 12px 40px #0003}.meta-dialog::backdrop{background:#0006}.meta-dialog-inner{padding:20px}.meta-dialog-header{display:flex;justify-content:space-between;align-items:center;font-size:1.2rem}.meta-dialog-header button{border:0;background:transparent;font-size:1.4rem;cursor:pointer}.meta-item{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid #eee9e2}.meta-label{color:#777;font-size:.85rem}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px}.card{background:white;border:1px solid #ddd8d0;border-radius:14px;overflow:hidden}.poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:#e8e5df;display:block}.card-body{padding:12px}.card .title{font-size:1rem}.card .status{margin-top:10px;font-size:.85rem;padding:6px 10px}
-.timeline-wrap{overflow-x:auto;padding-bottom:12px}.timeline{display:flex;gap:14px;min-width:max-content;align-items:flex-start}.year-column{width:170px;flex:0 0 170px}.year{font-size:1.35rem;font-weight:700;padding:8px 4px 12px;border-bottom:2px solid #171717;margin-bottom:12px}.year-films{display:grid;gap:14px}.timeline .card{width:170px}.empty{color:#777;padding:25px 0}.sentinel{height:20px}.debug{margin:10px 0 14px;padding:12px;border:1px solid #d66;border-radius:8px;background:#fff5f5;color:#333;font-size:12px}.debug pre{margin:8px 0 0;white-space:pre-wrap;word-break:break-word}
+.timeline-wrap{overflow-x:auto;padding-bottom:12px}.timeline{display:flex;gap:14px;min-width:max-content;align-items:flex-start}.year-column{width:170px;flex:0 0 170px}.year{font-size:1.35rem;font-weight:700;padding:8px 4px 12px;border-bottom:2px solid #171717;margin-bottom:12px}.year-films{display:grid;gap:14px}.timeline .card{width:170px}.empty{color:#777;padding:25px 0}.sentinel{height:20px}
 .links{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}.source-link{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d5d0c8;border-radius:8px;background:white;text-decoration:none;overflow:hidden}.source-link:hover{background:#f0ede8}.source-link img{width:22px;height:22px;object-fit:cover;border-radius:6px;display:block}.source-link.imdb img{width:24px;height:24px}.source-link.tomato img{width:24px;height:24px}
 @media(max-width:650px){.view-switcher{gap:10px}.view-button{padding:7px 9px}.film-row{padding:7px 10px}.film-detail{padding:10px}.status{padding:5px 9px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
@@ -34,15 +34,15 @@ h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 <button class="view-button active" data-view="list" title="Liste" aria-label="Liste"><span class="view-icon">☷</span></button>
 <button class="view-button" data-view="cards" title="Vignettes" aria-label="Vignettes"><span class="view-icon">▦</span></button>
 <button class="view-button" data-view="timeline" title="Frise" aria-label="Frise"><span class="view-icon">─</span></button>
-</div><button id="status" class="status status-filter all" type="button" title="Filtrer par statut" aria-label="Filtre de statut">Tous</button></div>
-<section id="debug" class="debug"><strong>DEBUG TEMPORAIRE</strong><pre id="debug-output">Chargement…</pre></section><section id="films"></section><div id="sentinel" class="sentinel"></div>
+</div><button id="status" class="status-filter all" type="button" title="Filtrer par statut" aria-label="Filtre de statut">Tous</button></div>
+<section id="films"></section><div id="sentinel" class="sentinel"></div>
 <dialog id="meta-dialog" class="meta-dialog"><div class="meta-dialog-inner"><div class="meta-dialog-header"><strong id="meta-dialog-title"></strong><button id="meta-close" type="button" aria-label="Fermer">×</button></div><div id="meta-content"></div></div></dialog>
 </main>
 <script type="application/json" id="films-data">{{ site.data.films.films | jsonify }}</script>
 <script type="application/json" id="views-list-data">{{ site.data.views.list.visible | jsonify }}</script>
 <script type="application/json" id="views-cards-data">{{ site.data.views.cards.visible | jsonify }}</script>
 <script>
-const labels = { seen: "Vu", to_watch: "À voir" };
+const labels = { seen: "Vu", to_watch: "À voir" };\nconst statusSymbols = { seen: "✓", to_watch: "×" };
 const fieldLabels = { titre:"Titre", année:"Année", auteur:"Auteur", acteurs_principaux:"Acteurs principaux", statut:"Statut", date_vue:"Date de visionnage" };
 
 const films = JSON.parse(document.querySelector("#films-data").textContent);
@@ -50,13 +50,13 @@ const listVisible = JSON.parse(document.querySelector("#views-list-data").textCo
 const cardsVisible = JSON.parse(document.querySelector("#views-cards-data").textContent);
 
 const root = document.querySelector("#films");
-const search = document.querySelector("#search");
+const search = document.querySelector("#author");
 const statusButton = document.querySelector("#status");
 const viewButtons = document.querySelectorAll("[data-view]");
 const sentinel = document.querySelector("#sentinel");
-const dialog = document.querySelector("#metadata-dialog");
-const dialogBody = document.querySelector("#metadata-body");
-const dialogClose = document.querySelector("#metadata-close");
+const dialog = document.querySelector("#meta-dialog");
+const dialogBody = document.querySelector("#meta-content");
+const dialogClose = document.querySelector("#meta-close");
 
 let currentView = "list";
 let statusIndex = 0;
@@ -90,21 +90,19 @@ function visibilityButton(f) {
   const seen = f.statut === "seen";
   return '<button class="visibility-button" type="button" data-visibility="' + f.id + '" aria-label="' +
     (seen ? "Vu" : "À voir") + '" title="' + (seen ? "Vu" : "À voir") + '">' +
-    (seen ? "◉" : "◉̸") + '</button>';
+    statusSymbols[f.statut] + '</button>';
 }
 
 function card(f) {
   const meta = cardsVisible.filter(k => k === "année" || k === "auteur")
     .map(k => valueFor(f,k)).filter(Boolean).join(" · ");
-  const status = cardsVisible.includes("statut")
-    ? '<button class="status ' + f.statut + '" type="button">' + labels[f.statut] + '</button>' : "";
   return '<article class="card">' +
     '<a href="' + (f.sources?.wikipedia || "#") + '" target="_blank" rel="noopener">' +
     '<img class="poster" src="' + (f.thumb_url || "") + '" alt="Affiche de ' + f.titre + '" loading="lazy"></a>' +
     '<div class="card-body">' +
     (cardsVisible.includes("titre") ? '<div class="title">' + f.titre + '</div>' : "") +
     (meta ? '<div class="meta">' + meta + '</div>' : "") +
-    '<div class="film-actions">' + status + visibilityButton(f) + infoButton(f) + '</div>' +
+    '<div class="film-actions">' + visibilityButton(f) + infoButton(f) + '</div>' +
     sourceLinks(f) +
     '</div></article>';
 }
@@ -116,13 +114,11 @@ function listItem(f) {
       '</div>' : "";
   const author = listVisible.includes("auteur")
     ? '<div class="list-meta">' + f.auteur + '</div>' : "";
-  const status = listVisible.includes("statut")
-    ? '<button class="status ' + f.statut + '" type="button" tabindex="-1">' + labels[f.statut] + '</button>' : "";
   return '<article class="film" data-id="' + f.id + '">' +
     '<div class="film-row" role="button" tabindex="0" aria-expanded="false">' +
     '<div class="film-row-main"><img class="list-thumb" src="' + (f.thumb_url || "") + '" alt="" loading="lazy">' +
     '<div class="film-row-text">' + title + author + '</div></div>' +
-    '<div class="film-actions">' + status + visibilityButton(f) + infoButton(f) + '</div></div>' +
+    '<div class="film-actions">' + visibilityButton(f) + infoButton(f) + '</div></div>' +
     '<div class="film-detail"><img class="poster" src="' + (f.thumb_url || "") + '" alt="Affiche de ' + f.titre + '" loading="lazy">' +
     '<div class="film-detail-body"><div class="film-detail-title">' + f.titre + '</div>' +
     '<div class="film-detail-meta">' + f.année + ' · ' + f.auteur +
@@ -196,7 +192,7 @@ search?.addEventListener("input", applyFilters);
 
 statusButton?.addEventListener("click", () => {
   statusIndex = (statusIndex + 1) % 3;
-  statusButton.textContent = ["Tous","Vu","À voir"][statusIndex];
+  statusButton.textContent = ["Tous","✓","×"][statusIndex];\n  statusButton.className = "status-filter " + (statusIndex === 0 ? "all" : statusIndex === 1 ? "seen" : "to_watch");
   applyFilters();
 });
 
