@@ -12,9 +12,11 @@ layout: null
 *{box-sizing:border-box}body{margin:0}.app{max-width:1200px;margin:auto;padding:36px 24px}
 h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.view-button{font:inherit;border:1px solid #d5d0c8;background:white;border-radius:10px;padding:9px 13px;cursor:pointer}
-.view-button.active{background:#171717;color:white;border-color:#171717}
-.filters{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px;margin-bottom:20px}
+.view-switcher{display:inline-flex;gap:3px;padding:3px;border:1px solid #d5d0c8;border-radius:11px;background:#eeeae4;margin-bottom:20px}
+.view-button{font:inherit;border:0;background:transparent;border-radius:8px;padding:7px 11px;cursor:pointer;color:#666}
+.view-button.active{background:white;color:#171717;box-shadow:0 1px 3px #0001}
+.view-icon{font-size:1rem;margin-right:5px}
+.filters{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px;margin-bottom:10px}
 select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radius:10px;background:white}
 .grid{display:grid;gap:4px}.film{background:white;border:1px solid #ddd8d0;border-radius:6px;overflow:hidden}.film-row{min-height:42px;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer}.film-detail{display:none;padding:12px;border-top:1px solid #eee9e2;background:#faf9f7;gap:14px;align-items:flex-start}.film.open .film-detail{display:flex}.film-detail img{width:54px;height:78px;object-fit:cover;border-radius:4px;flex:0 0 auto}.film-detail-body{min-width:0}.film-detail-title{font-weight:650}.film-detail-meta{color:#777;font-size:.84rem;margin-top:3px}.film-detail .links{margin-top:7px}.film-detail .links a{font-size:.78rem}
 .list-title{font-size:1rem;font-weight:600;line-height:1.2}.list-meta{color:#777;font-size:.82rem;margin-top:2px}
@@ -35,16 +37,16 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 <h1>🎬 Cinéma</h1>
 <p class="intro">Mon carnet de films</p>
 
-<div class="toolbar" aria-label="Vue">
-  <button class="view-button active" data-view="list">Liste</button>
-  <button class="view-button" data-view="cards">Vignettes</button>
-  <button class="view-button" data-view="timeline">Frise</button>
-</div>
-
 <div class="filters">
   <input id="author" placeholder="Rechercher dans les films…">
   <select id="year"><option value="">Toutes les années</option></select>
   <select id="status"><option value="">Tous les statuts</option><option value="seen">Vu</option><option value="to_watch">À voir</option></select>
+</div>
+
+<div class="view-switcher" role="group" aria-label="Vue">
+  <button class="view-button active" data-view="list" title="Liste"><span class="view-icon">☷</span>Liste</button>
+  <button class="view-button" data-view="cards" title="Vignettes"><span class="view-icon">▦</span>Vignettes</button>
+  <button class="view-button" data-view="timeline" title="Frise"><span class="view-icon">─</span>Frise</button>
 </div>
 
 <section id="films"></section>
