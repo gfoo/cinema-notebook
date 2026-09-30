@@ -125,7 +125,7 @@ L'utilisateur peut travailler dans plusieurs conversations thématiques (par exe
 
 ## Tâche de consolidation
 
-Une tâche de **consolidation** parcourt les `url_sources` du catalogue et vérifie pour l'instant simplement que les URL sont valides et accessibles. Elle ne doit pas encore enrichir automatiquement les fiches avec des informations externes.
+Une tâche de **consolidation** parcourt les `url_sources` et les `thumb_url` du catalogue et vérifie pour l'instant simplement que les URL sont valides et accessibles. Elle ne doit pas encore enrichir automatiquement les fiches avec des informations externes.
 
 ## Historique Git
 
