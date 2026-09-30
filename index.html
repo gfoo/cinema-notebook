@@ -25,7 +25,7 @@ h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radius:10px;background:white}
 .grid{display:grid;gap:4px}.film{background:white;border:1px solid #ddd8d0;border-radius:6px;overflow:hidden}.film-row{min-height:42px;padding:7px 12px;display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer}.film-detail{display:none;padding:12px;border-top:1px solid #eee9e2;background:#faf9f7;gap:14px;align-items:flex-start}.film.open .film-detail{display:flex}.film-detail img{width:54px;height:78px;object-fit:cover;border-radius:4px;flex:0 0 auto}.film-detail-body{min-width:0}.film-detail-title{font-weight:650}.film-detail-meta{color:#777;font-size:.84rem;margin-top:3px}.film-detail .links{margin-top:7px}.film-detail .links a{font-size:.78rem}
 .list-title{font-size:1rem;font-weight:600;line-height:1.2}.list-meta{color:#777;font-size:.82rem;margin-top:2px}
-.status{border:0;border-radius:999px;padding:5px 10px;font:inherit;font-size:.8rem;white-space:nowrap}.seen{background:#dcebdc}.to_watch{background:#e9e2d5}
+.status{border:0;border-radius:999px;padding:5px 10px;font:inherit;font-size:.8rem;white-space:nowrap}.seen{background:#dcebdc}.to_watch{background:#e9e2d5}.film-actions{display:flex;align-items:center;gap:6px}.info-button{width:28px;height:28px;border:1px solid #d5d0c8;border-radius:50%;background:white;color:#666;font-weight:700;cursor:pointer}.meta-dialog{width:min(520px,calc(100% - 32px));border:1px solid #d5d0c8;border-radius:14px;padding:0;background:white;box-shadow:0 12px 40px #0003}.meta-dialog::backdrop{background:#0006}.meta-dialog-inner{padding:20px}.meta-dialog-header{display:flex;justify-content:space-between;align-items:center;font-size:1.2rem}.meta-dialog-header button{border:0;background:transparent;font-size:1.4rem;cursor:pointer}.meta-item{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid #eee9e2}.meta-label{color:#777;font-size:.85rem}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px}
 .card{background:white;border:1px solid #ddd8d0;border-radius:14px;overflow:hidden}.poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:#e8e5df;display:block}
 .card-body{padding:12px}.card .title{font-size:1rem}.card .status{margin-top:10px;font-size:.85rem;padding:6px 10px}
@@ -54,12 +54,18 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 
 <section id="films"></section>
 <div id="sentinel" class="sentinel"></div>
+<dialog id="meta-dialog" class="meta-dialog"><div class="meta-dialog-inner"><div class="meta-dialog-header"><strong id="meta-dialog-title"></strong><button id="meta-close" type="button" aria-label="Fermer">×</button></div><div id="meta-content"></div></div></dialog>
 </main>
 
 <script>
 const films={{ site.data.films.films | jsonify }};
+const viewConfig={{ site.data.views | jsonify }};
 
 const labels={seen:"Vu",to_watch:"À voir"};
+const fieldLabels={titre:"Titre",année:"Année",auteur:"Auteur",acteurs_principaux:"Acteurs principaux",statut:"Statut",date_vue:"Date de visionnage"};
+function infoButton(f){return '<button class="info-button" type="button" data-info="'+f.id+'" aria-label="Informations sur '+f.titre+'" title="Toutes les informations">i</button>}
+function metadataDialog(f){const excluded=["id","thumb_url","sources"];let html="";Object.keys(f).forEach(k=>{if(!excluded.includes(k)){const v=k==="statut"?(labels[f[k]]||f[k]):(f[k]||"—");html+='<div class="meta-item"><div class="meta-label">'+(fieldLabels[k]||k.replaceAll("_"," "))+"</div><div>"+v+"</div></div>"}});html+=f.sources?sourceLinks(f):"";return html}
+
 const author=document.querySelector("#author"),status=document.querySelector("#status");
 const statusModes=["","seen","to_watch"],statusLabels=["Tous","Vu","À voir"];
 let statusIndex=0;
