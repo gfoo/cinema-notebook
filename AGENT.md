@@ -18,7 +18,7 @@ L'utilisateur souhaite que **ChatGPT soit l'interface principale de saisie et de
 
 Le fichier canonique est :
 
-`data/films.yml`
+`_data/films.yml`
 
 Chaque film utilise actuellement :
 
@@ -117,7 +117,7 @@ Lorsqu'une conversation permet d'identifier ou de qualifier un film :
 
 1. discuter avec l'utilisateur ;
 2. ne transformer en donnée que ce qui est explicitement établi ;
-3. modifier `data/films.yml` si une modification est confirmée ;
+3. modifier `_data/films.yml` si une modification est confirmée ;
 4. conserver les informations inconnues comme inconnues plutôt que les deviner ;
 5. faire un commit GitHub avec un message clair.
 
