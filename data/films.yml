@@ -1,0 +1,16 @@
+films:
+  - id: blade-runner-1982
+    title: Blade Runner
+    original_title: Blade Runner
+    year: 1982
+    director: Ridley Scott
+    status: seen
+    notes: null
+
+  - id: blade-runner-2049
+    title: Blade Runner 2049
+    original_title: Blade Runner 2049
+    year: 2017
+    director: Denis Villeneuve
+    status: seen
+    notes: null
