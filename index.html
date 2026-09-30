@@ -63,6 +63,7 @@ const viewConfig={{ site.data.views | jsonify }};
 
 const labels={seen:"Vu",to_watch:"À voir"};
 const fieldLabels={titre:"Titre",année:"Année",auteur:"Auteur",acteurs_principaux:"Acteurs principaux",statut:"Statut",date_vue:"Date de visionnage"};
+function valueFor(f,field){if(field==="statut")return labels[f[field]]||f[field]||"";return f[field]??""}
 function infoButton(f){return '<button class="info-button" type="button" data-info="'+f.id+'" aria-label="Informations sur '+f.titre+'" title="Toutes les informations">i</button>}
 function metadataDialog(f){const excluded=["id","thumb_url","sources"];let html="";Object.keys(f).forEach(k=>{if(!excluded.includes(k)){const v=k==="statut"?(labels[f[k]]||f[k]):(f[k]||"—");html+='<div class="meta-item"><div class="meta-label">'+(fieldLabels[k]||k.replaceAll("_"," "))+"</div><div>"+v+"</div></div>"}});html+=f.sources?sourceLinks(f):"";return html}
 
@@ -87,9 +88,9 @@ function card(f){
   return `<article class="card">
     <a href="${f.sources?.wikipedia||f.sources?.imdb||f.sources?.rotten_tomatoes||"#"}" target="_blank" rel="noopener"><img class="poster" src="${f.thumb_url||""}" alt="Affiche de ${f.titre}" loading="lazy"></a>
     <div class="card-body">
-      <div class="title">${f.titre}</div>
-      <div class="meta">${f.année} · ${f.auteur}</div>
-      <button class="status ${f.statut}">${labels[f.statut]}</button>
+      ${viewConfig.cards.visible.includes("titre")?`<div class="title">${f.titre}</div>`:""}
+      ${viewConfig.cards.visible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")?`<div class="meta">${viewConfig.cards.visible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")}</div>`:""}
+      <div class="film-actions">${viewConfig.cards.visible.includes("statut")?`<button class="status ${f.statut}">${labels[f.statut]}</button>`:""}${infoButton(f)}</div>
       ${sourceLinks(f)}
     </div>
   </article>`;
@@ -97,8 +98,8 @@ function card(f){
 function listItem(f){
   return `<article class="film" data-id="${f.id}">
     <div class="film-row" role="button" tabindex="0" aria-expanded="false">
-      <div><div class="list-title">${f.titre} <span class="list-meta">(${f.année})</span></div><div class="list-meta">${f.auteur}</div></div>
-      <button class="status ${f.statut}" tabindex="-1">${labels[f.statut]}</button>
+      <div>${viewConfig.list.visible.includes("titre")?`<div class="list-title">${f.titre}${viewConfig.list.visible.includes("année")?` <span class="list-meta">(${f.année})</span>`:""}</div>`:""}${viewConfig.list.visible.includes("auteur")?`<div class="list-meta">${f.auteur}</div>`:""}</div>
+      <div class="film-actions">${viewConfig.list.visible.includes("statut")?`<button class="status ${f.statut}" tabindex="-1">${labels[f.statut]}</button>`:""}${infoButton(f)}</div>
     </div>
     <div class="film-detail"><img src="${f.thumb_url||""}" alt="Affiche de ${f.titre}" loading="lazy"><div class="film-detail-body"><div class="film-detail-title">${f.titre}</div><div class="film-detail-meta">${f.année} · ${f.auteur}${f.date_vue&&f.date_vue!=="inconnue"?" · Vu le "+f.date_vue:""}</div>${sourceLinks(f)}</div></div>
   </article>`;
@@ -143,6 +144,10 @@ function setView(view){
   applyFilters();
 }
 document.querySelectorAll(".view-button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
+const metaDialog=document.querySelector("#meta-dialog"),metaContent=document.querySelector("#meta-content"),metaTitle=document.querySelector("#meta-dialog-title");
+document.addEventListener("click",e=>{const b=e.target.closest("[data-info]");if(b){e.stopPropagation();const f=films.find(x=>x.id===b.dataset.info);if(f){metaTitle.textContent=f.titre;metaContent.innerHTML=metadataDialog(f);metaDialog.showModal()}}});
+document.querySelector("#meta-close").addEventListener("click",()=>metaDialog.close());
+metaDialog.addEventListener("click",e=>{if(e.target===metaDialog)metaDialog.close()});
 author.addEventListener("input",applyFilters);
 function updateStatusButton(){status.textContent=statusLabels[statusIndex];status.className="status status-filter "+(statusModes[statusIndex]||"all")}
 status.addEventListener("click",()=>{statusIndex=(statusIndex+1)%statusModes.length;updateStatusButton();applyFilters()});
