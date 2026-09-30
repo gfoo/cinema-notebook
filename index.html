@@ -103,7 +103,8 @@ function renderMore(){
   if(offset===0 && !batch.length){root.innerHTML='<div class="empty">Aucun film.</div>';return;}
   if(currentView==="list"){
     if(offset===0) root.innerHTML='<div class="grid" id="view-content"></div>';
-    document.querySelector("#view-content").insertAdjacentHTML("beforeend",batch.map(listItem).join(""));\n    bindListRows();
+    document.querySelector("#view-content").insertAdjacentHTML("beforeend",batch.map(listItem).join(""));
+    bindListRows();
   } else {
     if(offset===0) root.innerHTML='<div class="cards" id="view-content"></div>';
     document.querySelector("#view-content").insertAdjacentHTML("beforeend",batch.map(card).join(""));
