@@ -16,9 +16,9 @@ h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 .view-button.active{background:#171717;color:white;border-color:#171717}
 .filters{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:10px;margin-bottom:20px}
 select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radius:10px;background:white}
-.grid{display:grid;gap:12px}.film{background:white;border:1px solid #ddd8d0;border-radius:14px;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:20px}
-.title{font-size:1.15rem;font-weight:650}.meta{color:#777;margin-top:4px;font-size:.92rem}
-.status{border:0;border-radius:999px;padding:8px 13px;font:inherit}.seen{background:#dcebdc}.to_watch{background:#e9e2d5}
+.grid{display:grid;gap:4px}.film{background:white;border:1px solid #ddd8d0;border-radius:6px;padding:7px 12px;min-height:42px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.list-title{font-size:1rem;font-weight:600;line-height:1.2}.list-meta{color:#777;font-size:.82rem;margin-top:2px}
+.status{border:0;border-radius:999px;padding:5px 10px;font:inherit;font-size:.8rem;white-space:nowrap}.seen{background:#dcebdc}.to_watch{background:#e9e2d5}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px}
 .card{background:white;border:1px solid #ddd8d0;border-radius:14px;overflow:hidden}.poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:#e8e5df;display:block}
 .card-body{padding:12px}.card .title{font-size:1rem}.card .status{margin-top:10px;font-size:.85rem;padding:6px 10px}
@@ -27,7 +27,7 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 .year-films{display:grid;gap:14px}.timeline .card{width:170px}
 .empty{color:#777;padding:25px 0}.sentinel{height:20px}
 .links{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}.links a{font-size:.8rem;color:#555}
-@media(max-width:650px){.filters{grid-template-columns:1fr}.film{align-items:flex-start;flex-direction:column}.status{width:100%}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.filters{grid-template-columns:1fr}.film{padding:7px 10px}.status{padding:5px 9px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
 <body>
@@ -79,7 +79,7 @@ function card(f){
 }
 function listItem(f){
   return `<article class="film">
-    <div><div class="title">${f.titre} <span class="meta">(${f.année})</span></div><div class="meta">${f.auteur}</div></div>
+    <div><div class="list-title">${f.titre} <span class="list-meta">(${f.année})</span></div><div class="list-meta">${f.auteur}</div></div>
     <button class="status ${f.statut}">${labels[f.statut]}</button>
   </article>`;
 }
