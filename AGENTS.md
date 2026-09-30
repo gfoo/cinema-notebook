@@ -26,8 +26,23 @@ Chaque film utilise actuellement :
 - `titre`
 - `année`
 - `auteur` : réalisateur
+- `acteurs_principaux` : noms séparés par des virgules
 - `statut`
 - `date_vue`
+- `thumb_url`
+- `sources` : liens externes structurés
+
+### Sources externes
+
+Conserver au maximum trois sources, lorsqu'elles sont disponibles :
+
+- `sources.wikipedia`
+- `sources.imdb`
+- `sources.rotten_tomatoes`
+
+Ne pas conserver d'autres liens de sources dans le catalogue sauf demande explicite de l'utilisateur.
+
+Les liens IMDb utilisent les URLs HTTPS normales des fiches de films. Sur mobile, le système peut ouvrir l'application IMDb si elle est installée ; le site ne doit pas dépendre d'un schéma d'URL applicatif propriétaire.
 
 ### Statut
 
@@ -65,7 +80,6 @@ Les métadonnées d'affichage et les sources externes peuvent être ajoutées lo
 Ne pas ajouter sans demande explicite :
 
 - genres
-- acteurs
 - pays
 - durée
 - notes
@@ -91,7 +105,7 @@ Le catalogue initial contient notamment :
 `index.html` est une interface très simple permettant actuellement :
 
 - d'afficher les films ;
-- de filtrer par auteur ;
+- de rechercher dans les informations principales ;
 - de filtrer par année ;
 - de filtrer par statut.
 
@@ -108,6 +122,8 @@ Le site propose trois vues :
 - `Frise` : années organisées en colonnes horizontales, avec défilement horizontal.
 
 Les vues Liste et Vignettes utilisent un chargement progressif côté interface. La Frise n'utilise pas le défilement infini.
+
+Les liens externes sont affichés sous forme de petites icônes pour Wikipedia, IMDb et Rotten Tomatoes.
 
 Ne pas introduire une authentification GitHub ou une API d'écriture simplement pour ajouter des boutons d'édition. ChatGPT peut modifier le dépôt directement lorsque l'utilisateur lui demande de modifier le catalogue.
 
@@ -131,6 +147,7 @@ Elle est ciblée par métadonnée, par exemple :
 
 - **vignettes** : vérifier les `thumb_url`, rechercher une vignette lorsqu'elle manque ou est invalide ;
 - **acteurs principaux** : vérifier ou compléter la liste des acteurs principaux ;
+- **sources** : vérifier que les trois sources standardisées sont présentes lorsqu'elles existent ;
 - toute autre métadonnée explicitement demandée par l'utilisateur.
 
 ### Règles de consolidation
@@ -147,8 +164,7 @@ Exemples :
 
 - « consolide les vignettes » → travailler uniquement sur `thumb_url`.
 - « consolide les acteurs principaux » → si le champ n'existe pas encore, demander d'abord le nom et la structure souhaités.
-- « consolide les sources » → travailler uniquement sur `url_sources`.
-
+- « consolide les sources » → travailler uniquement sur `sources` et ses trois sous-champs standardisés.
 
 ## Historique Git
 
