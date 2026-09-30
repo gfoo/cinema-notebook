@@ -26,7 +26,7 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 .year-column{width:170px;flex:0 0 170px}.year{font-size:1.35rem;font-weight:700;padding:8px 4px 12px;border-bottom:2px solid #171717;margin-bottom:12px}
 .year-films{display:grid;gap:14px}.timeline .card{width:170px}
 .empty{color:#777;padding:25px 0}.sentinel{height:20px}
-.links{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}.links a{font-size:.8rem;color:#555}
+.links{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}.source-link{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d5d0c8;border-radius:8px;background:white;color:#333;text-decoration:none;font-size:.72rem;font-weight:700}.source-link:hover{background:#f0ede8}.source-link.imdb{font-size:.6rem}.source-link.tomato{font-size:1rem}
 @media(max-width:650px){.filters{grid-template-columns:1fr}.film-row{padding:7px 10px}.film-detail{padding:10px}.status{padding:5px 9px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
 </head>
@@ -62,13 +62,19 @@ let currentView="list",offset=0,pageSize=24,filtered=[];
 [...new Set(films.map(f=>f.année))].sort((a,b)=>a-b).forEach(y=>year.insertAdjacentHTML("beforeend",`<option value="${y}">${y}</option>`));
 
 function sourceLinks(f){
-  return f.url_sources?.length
-    ? `<div class="links">${f.url_sources.map((u,i)=>`<a href="${u}" target="_blank" rel="noopener">${i===0?"Wikipedia":"Source "+i}</a>`).join("")}</div>`
+  const s=f.sources||{};
+  const links=[
+    s.wikipedia?['Ⓦ','Wikipedia','']:null,
+    s.imdb?['IMDb','IMDb','imdb']:null,
+    s.rotten_tomatoes?['🍅','Rotten Tomatoes','tomato']:null
+  ].filter(Boolean);
+  return links.length
+    ? `<div class="links">${links.map(([icon,label,cls])=>`<a class="source-link ${cls}" href="${s[label==='Wikipedia'?'wikipedia':label==='IMDb'?'imdb':'rotten_tomatoes']}" target="_blank" rel="noopener" aria-label="${label}" title="${label}">${icon}</a>`).join("")}</div>`
     : "";
 }
 function card(f){
   return `<article class="card">
-    <a href="${f.url_sources?.[0]||"#"}" target="_blank" rel="noopener"><img class="poster" src="${f.thumb_url||""}" alt="Affiche de ${f.titre}" loading="lazy"></a>
+    <a href="${f.sources?.wikipedia||f.sources?.imdb||f.sources?.rotten_tomatoes||"#"}" target="_blank" rel="noopener"><img class="poster" src="${f.thumb_url||""}" alt="Affiche de ${f.titre}" loading="lazy"></a>
     <div class="card-body">
       <div class="title">${f.titre}</div>
       <div class="meta">${f.année} · ${f.auteur}</div>
@@ -86,7 +92,7 @@ function listItem(f){
     <div class="film-detail"><img src="${f.thumb_url||""}" alt="Affiche de ${f.titre}" loading="lazy"><div class="film-detail-body"><div class="film-detail-title">${f.titre}</div><div class="film-detail-meta">${f.année} · ${f.auteur}${f.date_vue&&f.date_vue!=="inconnue"?" · Vu le "+f.date_vue:""}</div>${sourceLinks(f)}</div></div>
   </article>`;
 }
-function bindListRows(){document.querySelectorAll(".film-row").forEach(row=>{const toggle=()=>{const film=row.closest(".film");const open=film.classList.toggle("open");row.setAttribute("aria-expanded",open)};row.addEventListener("click",toggle);row.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}})})}
+function bindListRows(){document.querySelectorAll(".film-row").forEach(row=>{if(row.dataset.bound)return;row.dataset.bound="1";const toggle=()=>{const film=row.closest(".film");const open=film.classList.toggle("open");row.setAttribute("aria-expanded",open)};row.addEventListener("click",toggle);row.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}})})}
 function applyFilters(){
   const q=author.value.trim().toLowerCase(),y=year.value,s=status.value;
   filtered=films.filter(f=>{
