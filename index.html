@@ -89,7 +89,9 @@ function listItem(f){
 function bindListRows(){document.querySelectorAll(".film-row").forEach(row=>{const toggle=()=>{const film=row.closest(".film");const open=film.classList.toggle("open");row.setAttribute("aria-expanded",open)};row.addEventListener("click",toggle);row.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}})})}
 function applyFilters(){
   const q=author.value.trim().toLowerCase(),y=year.value,s=status.value;
-  filtered=films.filter(f=>{\n    const text=[f.titre,f.auteur,f.année,f.statut,labels[f.statut]].filter(v=>v!=null).join(" ").toLowerCase();\n    return (!q||text.includes(q))&&(!y||String(f.année)===y)&&(!s||f.statut===s);\n  });
+  filtered=films.filter(f=>{
+    const text=[f.titre,f.auteur,f.année,f.statut,labels[f.statut]].filter(v=>v!=null).join(" ").toLowerCase();
+    return (!q||text.includes(q))&&(!y||String(f.année)===y)&&(!s||f.statut===s);\n  });
   offset=0;
   root.innerHTML="";
   renderMore();
