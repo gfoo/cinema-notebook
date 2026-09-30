@@ -9,7 +9,7 @@ layout: null
 <title>Cinéma</title>
 <style>
 :root{font-family:system-ui,-apple-system,sans-serif;color:#171717;background:#f5f3ef}
-*{box-sizing:border-box}body{margin:0}.app{max-width:1200px;margin:auto;padding:36px 24px}.theme-switch{position:fixed;top:10px;right:12px;width:30px;height:18px;border:1px solid #aaa;border-radius:999px;background:#ddd;padding:2px;cursor:pointer;z-index:20}.theme-switch span{display:block;width:12px;height:12px;border-radius:50%;background:#555;transition:transform .18s}.theme-switch.on span{transform:translateX(12px)}html.gray-mode .app,html.gray-mode .meta-dialog,html.gray-mode .theme-switch{filter:grayscale(1)}
+*{box-sizing:border-box}body{margin:0}.app{max-width:1200px;margin:auto;padding:36px 24px}.theme-switch{position:fixed;top:10px;right:12px;width:30px;height:18px;border:1px solid #aaa;border-radius:999px;background:#ddd;padding:2px;cursor:pointer;z-index:20}.theme-switch span{display:block;width:12px;height:12px;border-radius:50%;background:#555;transition:transform .18s}.theme-switch input{position:absolute;opacity:0;pointer-events:none}.theme-switch:has(input:checked) span{transform:translateX(12px)}html:has(.theme-switch input:checked) .app,html:has(.theme-switch input:checked) .meta-dialog,html:has(.theme-switch input:checked) .theme-switch{filter:grayscale(1)}
 h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 .view-switcher{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .view-buttons{display:inline-flex;gap:3px;padding:3px;border:1px solid #d5d0c8;border-radius:11px;background:#eeeae4}
@@ -38,7 +38,7 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 </style>
 </head>
 <body>
-<button id="theme-switch" class="theme-switch" type="button" title="Mode niveaux de gris" aria-label="Activer ou désactiver les niveaux de gris"><span></span></button>
+<label id="theme-switch" class="theme-switch" title="Mode niveaux de gris" aria-label="Mode niveaux de gris"><input id="gray-toggle" type="checkbox"><span></span></label>
 <main class="app">
 <div class="filters">
   <input id="author" placeholder="Rechercher dans les films…">
@@ -60,13 +60,8 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 
 <script>
 const films={{ site.data.films.films | jsonify }};
-const themeSwitch=document.querySelector("#theme-switch");
-function setGrayMode(enabled){document.documentElement.classList.toggle("gray-mode",enabled);themeSwitch.classList.toggle("on",enabled);try{localStorage.setItem("grayMode",enabled?"1":"0")}catch(e){}}
-themeSwitch.addEventListener("click",()=>setGrayMode(!document.documentElement.classList.contains("gray-mode")));
-try{setGrayMode(localStorage.getItem("grayMode")==="1")}catch(e){}
-const viewConfig={{ site.data.views | jsonify }} || {};
-const listVisible=(viewConfig.list&&Array.isArray(viewConfig.list.visible))?viewConfig.list.visible:["titre","année","auteur","statut"];
-const cardsVisible=(viewConfig.cards&&Array.isArray(viewConfig.cards.visible))?viewConfig.cards.visible:["titre","année","auteur","statut"];
+const listVisible={{ site.data.views.list.visible | jsonify }};
+const cardsVisible={{ site.data.views.cards.visible | jsonify }};
 
 const labels={seen:"Vu",to_watch:"À voir"};
 const fieldLabels={titre:"Titre",année:"Année",auteur:"Auteur",acteurs_principaux:"Acteurs principaux",statut:"Statut",date_vue:"Date de visionnage"};
