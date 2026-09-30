@@ -96,7 +96,7 @@ function card(f){
     <a href="${f.sources?.wikipedia||f.sources?.imdb||f.sources?.rotten_tomatoes||"#"}" target="_blank" rel="noopener"><img class="poster" src="${f.thumb_url||""}" alt="Affiche de ${f.titre}" loading="lazy"></a>
     <div class="card-body">
       ${cardsVisible.includes("titre")?`<div class="title">${f.titre}</div>`:""}
-      ${cardsVisible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")?`<div class="meta">${viewConfig.cards.visible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")}</div>`:""}
+      ${cardsVisible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")?`<div class="meta">${cardsVisible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")}</div>`:""}
       <div class="film-actions">${cardsVisible.includes("statut")?`<button class="status ${f.statut}">${labels[f.statut]}</button>`:""}${infoButton(f)}</div>
       ${sourceLinks(f)}
     </div>
