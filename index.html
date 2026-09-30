@@ -49,7 +49,7 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
     <button class="view-button" data-view="cards" title="Vignettes" aria-label="Vignettes"><span class="view-icon">▦</span></button>
     <button class="view-button" data-view="timeline" title="Frise" aria-label="Frise"><span class="view-icon">─</span></button>
   </div>
-  <button id="status" class="status-filter" type="button" title="Filtrer par statut" aria-label="Filtre de statut">◉ Tous</button>
+  <button id="status" class="status status-filter all" type="button" title="Filtrer par statut" aria-label="Filtre de statut">Tous</button>
 </div>
 
 <section id="films"></section>
@@ -138,7 +138,7 @@ function setView(view){
 }
 document.querySelectorAll(".view-button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
 author.addEventListener("input",applyFilters);
-function updateStatusButton(){status.textContent=statusLabels[statusIndex];status.className="status-filter "+(statusModes[statusIndex]||"all")}
+function updateStatusButton(){status.textContent=statusLabels[statusIndex];status.className="status status-filter "+(statusModes[statusIndex]||"all")}
 status.addEventListener("click",()=>{statusIndex=(statusIndex+1)%statusModes.length;updateStatusButton();applyFilters()});
 const observer=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&currentView!=="timeline"&&offset<filtered.length)renderMore();},{rootMargin:"400px"});
 observer.observe(sentinel);
