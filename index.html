@@ -9,7 +9,7 @@ layout: null
 <title>Cinéma</title>
 <style>
 :root{font-family:system-ui,-apple-system,sans-serif;color:#171717;background:#f5f3ef}
-*{box-sizing:border-box}body{margin:0}.app{max-width:1200px;margin:auto;padding:36px 24px}.theme-switch{position:fixed;top:10px;right:12px;width:30px;height:18px;border:1px solid #aaa;border-radius:999px;background:#ddd;padding:2px;cursor:pointer;z-index:20}.theme-switch span{display:block;width:12px;height:12px;border-radius:50%;background:#555;transition:transform .18s}.theme-switch.on span{transform:translateX(12px)}body.gray .app{filter:grayscale(1)}
+*{box-sizing:border-box}body{margin:0}.app{max-width:1200px;margin:auto;padding:36px 24px}.theme-switch{position:fixed;top:10px;right:12px;width:30px;height:18px;border:1px solid #aaa;border-radius:999px;background:#ddd;padding:2px;cursor:pointer;z-index:20}.theme-switch span{display:block;width:12px;height:12px;border-radius:50%;background:#555;transition:transform .18s}.theme-switch.on span{transform:translateX(12px)}html.gray-mode .app,html.gray-mode .meta-dialog,html.gray-mode .theme-switch{filter:grayscale(1)}
 h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 .view-switcher{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
 .view-buttons{display:inline-flex;gap:3px;padding:3px;border:1px solid #d5d0c8;border-radius:11px;background:#eeeae4}
@@ -61,9 +61,12 @@ select,input{font:inherit;padding:11px 13px;border:1px solid #d5d0c8;border-radi
 <script>
 const films={{ site.data.films.films | jsonify }};
 const themeSwitch=document.querySelector("#theme-switch");
-themeSwitch.addEventListener("click",()=>{document.body.classList.toggle("gray");themeSwitch.classList.toggle("on");localStorage.setItem("grayMode",document.body.classList.contains("gray"));});
-if(localStorage.getItem("grayMode")==="true"){document.body.classList.add("gray");themeSwitch.classList.add("on");}
-const viewConfig={{ site.data.views | jsonify }};
+function setGrayMode(enabled){document.documentElement.classList.toggle("gray-mode",enabled);themeSwitch.classList.toggle("on",enabled);try{localStorage.setItem("grayMode",enabled?"1":"0")}catch(e){}}
+themeSwitch.addEventListener("click",()=>setGrayMode(!document.documentElement.classList.contains("gray-mode")));
+try{setGrayMode(localStorage.getItem("grayMode")==="1")}catch(e){}
+const viewConfig={{ site.data.views | jsonify }} || {};
+const listVisible=(viewConfig.list&&Array.isArray(viewConfig.list.visible))?viewConfig.list.visible:["titre","année","auteur","statut"];
+const cardsVisible=(viewConfig.cards&&Array.isArray(viewConfig.cards.visible))?viewConfig.cards.visible:["titre","année","auteur","statut"];
 
 const labels={seen:"Vu",to_watch:"À voir"};
 const fieldLabels={titre:"Titre",année:"Année",auteur:"Auteur",acteurs_principaux:"Acteurs principaux",statut:"Statut",date_vue:"Date de visionnage"};
@@ -92,9 +95,9 @@ function card(f){
   return `<article class="card">
     <a href="${f.sources?.wikipedia||f.sources?.imdb||f.sources?.rotten_tomatoes||"#"}" target="_blank" rel="noopener"><img class="poster" src="${f.thumb_url||""}" alt="Affiche de ${f.titre}" loading="lazy"></a>
     <div class="card-body">
-      ${viewConfig.cards.visible.includes("titre")?`<div class="title">${f.titre}</div>`:""}
-      ${viewConfig.cards.visible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")?`<div class="meta">${viewConfig.cards.visible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")}</div>`:""}
-      <div class="film-actions">${viewConfig.cards.visible.includes("statut")?`<button class="status ${f.statut}">${labels[f.statut]}</button>`:""}${infoButton(f)}</div>
+      ${cardsVisible.includes("titre")?`<div class="title">${f.titre}</div>`:""}
+      ${cardsVisible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")?`<div class="meta">${viewConfig.cards.visible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")}</div>`:""}
+      <div class="film-actions">${cardsVisible.includes("statut")?`<button class="status ${f.statut}">${labels[f.statut]}</button>`:""}${infoButton(f)}</div>
       ${sourceLinks(f)}
     </div>
   </article>`;
@@ -102,8 +105,8 @@ function card(f){
 function listItem(f){
   return `<article class="film" data-id="${f.id}">
     <div class="film-row" role="button" tabindex="0" aria-expanded="false">
-      <div>${viewConfig.list.visible.includes("titre")?`<div class="list-title">${f.titre}${viewConfig.list.visible.includes("année")?` <span class="list-meta">(${f.année})</span>`:""}</div>`:""}${viewConfig.list.visible.includes("auteur")?`<div class="list-meta">${f.auteur}</div>`:""}</div>
-      <div class="film-actions">${viewConfig.list.visible.includes("statut")?`<button class="status ${f.statut}" tabindex="-1">${labels[f.statut]}</button>`:""}${infoButton(f)}</div>
+      <div>${listVisible.includes("titre")?`<div class="list-title">${f.titre}${listVisible.includes("année")?` <span class="list-meta">(${f.année})</span>`:""}</div>`:""}${listVisible.includes("auteur")?`<div class="list-meta">${f.auteur}</div>`:""}</div>
+      <div class="film-actions">${listVisible.includes("statut")?`<button class="status ${f.statut}" tabindex="-1">${labels[f.statut]}</button>`:""}${infoButton(f)}</div>
     </div>
     <div class="film-detail"><img src="${f.thumb_url||""}" alt="Affiche de ${f.titre}" loading="lazy"><div class="film-detail-body"><div class="film-detail-title">${f.titre}</div><div class="film-detail-meta">${f.année} · ${f.auteur}${f.date_vue&&f.date_vue!=="inconnue"?" · Vu le "+f.date_vue:""}</div>${sourceLinks(f)}</div></div>
   </article>`;
