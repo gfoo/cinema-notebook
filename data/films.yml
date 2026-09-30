@@ -1,8 +1,14 @@
 films:
-  - titre: Blade Runner
+  - id: blade-runner-1982
+    titre: Blade Runner
     année: 1982
+    auteur: Ridley Scott
     statut: seen
+    certitude: certaine
 
-  - titre: Blade Runner 2049
+  - id: blade-runner-2049
+    titre: Blade Runner 2049
     année: 2017
+    auteur: Denis Villeneuve
     statut: to_watch
+    certitude: certaine
