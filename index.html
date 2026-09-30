@@ -42,39 +42,19 @@ h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 <script type="application/json" id="views-list-data">{{ site.data.views.list.visible | jsonify }}</script>
 <script type="application/json" id="views-cards-data">{{ site.data.views.cards.visible | jsonify }}</script>
 <script>
-const debugOutput=document.querySelector("#debug-output");
-function debug(msg){debugOutput.textContent=msg}
-let films=[],listVisible=[],cardsVisible=[];
+const out=document.querySelector("#debug-output");
 try {
-  films=JSON.parse(document.querySelector("#films-data").textContent);
-  listVisible=JSON.parse(document.querySelector("#views-list-data").textContent);
-  cardsVisible=JSON.parse(document.querySelector("#views-cards-data").textContent);
-  debug("Jekyll → films : "+films.length+"\nJekyll → listVisible : "+JSON.stringify(listVisible)+"\nJekyll → cardsVisible : "+JSON.stringify(cardsVisible)+"\n\nPREMIER FILM :\n"+(films[0]?JSON.stringify(films[0],null,2):"(aucun)"));
+  const films=JSON.parse(document.querySelector("#films-data").textContent);
+  const list=JSON.parse(document.querySelector("#views-list-data").textContent);
+  const cards=JSON.parse(document.querySelector("#views-cards-data").textContent);
+  out.textContent="Jekyll → films : "+films.length+
+    "\nJekyll → listVisible : "+JSON.stringify(list)+
+    "\nJekyll → cardsVisible : "+JSON.stringify(cards)+
+    "\n\nPREMIER FILM :\n"+(films[0]?JSON.stringify(films[0],null,2):"(aucun)");
 } catch(e) {
-  debug("ERREUR DONNÉES JEKYLL / JSON\n"+e.message+"\n\nfilms-data brut :\n"+document.querySelector("#films-data").textContent);
-  throw e;
+  out.textContent="ERREUR : "+e.message+
+    "\n\nfilms-data brut :\n"+document.querySelector("#films-data").textContent;
 }
-const labels={seen:"Vu",to_watch:"À voir"};
-const fieldLabels={titre:"Titre",année:"Année",auteur:"Auteur",acteurs_principaux:"Acteurs principaux",statut:"Statut",date_vue:"Date de visionnage"};
-function valueFor(f,field){if(field==="statut")return labels[f[field]]||f[field]||"";return f[field]??""}
-function infoButton(f){return '<button class="info-button" type="button" data-info="'+f.id+'" aria-label="Informations sur '+f.titre+'" title="Toutes les informations">i</button>'}
-function visibilityButton(f){const visible=f.statut==="seen";return '<button class="visibility-button" type="button" data-visibility="'+f.id+'" aria-label="'+(visible?"Masquer":"Afficher")+'" title="'+(visible?"Vu — masquer":"À voir — afficher")+'">'+(visible?"◉":"◉̸")+'</button>'}
-function metadataDialog(f){const excluded=["id","thumb_url","sources"];let html="";Object.keys(f).forEach(k=>{if(!excluded.includes(k)){const v=k==="statut"?(labels[f[k]]||f[k]):(f[k]||"—");html+='<div class="meta-item"><div class="meta-label">'+(fieldLabels[k]||k.replaceAll("_"," "))+"</div><div>"+v+"</div></div>"}});html+=f.sources?sourceLinks(f):"";return html}
-const author=document.querySelector("#author"),status=document.querySelector("#status");const statusModes=["","seen","to_watch"],statusLabels=["Tous","Vu","À voir"];let statusIndex=0;const root=document.querySelector("#films"),sentinel=document.querySelector("#sentinel");let currentView="list",offset=0,pageSize=24,filtered=[];
-function sourceLinks(f){const s=f.sources||{};const links=[s.wikipedia?['https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/74/4d/87/744d87ec-852d-79a5-22e1-4375bf4108f5/AppIcon-0-1x_U007emarketing-0-0-0-8-0-0-sRGB-85-220-0.png/1200x630wa.png','Wikipedia','']:null,s.imdb?['https://images.squarespace-cdn.com/content/v1/63c6e28fd72e1164cb2cdcfd/9794d573-cecc-43ac-8a13-6b666f57cb15/IMDB.png','IMDb','imdb']:null,s.rotten_tomatoes?['https://fastly.mwm-storage.mwmcdn.com/raw_files/073ee4e9-9ffb-447c-8381-f1956985ed54','Rotten Tomatoes','tomato']:null].filter(Boolean);return links.length?'<div class="links">'+links.map(([icon,label,cls])=>'<a class="source-link '+cls+'" href="'+s[label==="Wikipedia"?"wikipedia":label==="IMDb"?"imdb":"rotten_tomatoes"]+'" target="_blank" rel="noopener" aria-label="'+label+'" title="'+label+'"><img src="'+icon+'" alt="" loading="lazy"></a>').join("")+"</div>":""}
-function card(f){return '<article class="card"><a href="'+(f.sources?.wikipedia||f.sources?.imdb||f.sources?.rotten_tomatoes||"#")+'" target="_blank" rel="noopener"><img class="poster" src="'+(f.thumb_url||"")+'" alt="Affiche de '+f.titre+'" loading="lazy"></a><div class="card-body">'+(cardsVisible.includes("titre")?'<div class="title">'+f.titre+"</div>":"")+(cardsVisible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")?'<div class="meta">'+cardsVisible.filter(k=>["année","auteur"].includes(k)).map(k=>valueFor(f,k)).filter(Boolean).join(" · ")+"</div>":"")+'<div class="film-actions">'+(cardsVisible.includes("statut")?'<button class="status '+f.statut+'">'+labels[f.statut]+"</button>":"")+visibilityButton(f)+infoButton(f)+"</div>"+sourceLinks(f)+"</div></article>"}
-function listItem(f){return '<article class="film" data-id="'+f.id+'"><div class="film-row" role="button" tabindex="0" aria-expanded="false"><div class="film-row-main"><img class="list-thumb" src="'+(f.thumb_url||"")+'" alt="" loading="lazy"><div class="film-row-text">'+(listVisible.includes("titre")?'<div class="list-title">'+f.titre+(listVisible.includes("année")?' <span class="list-meta">('+f.année+")</span>":"")+"</div>":"")+(listVisible.includes("auteur")?'<div class="list-meta">'+f.auteur+"</div>":"")+'</div></div><div class="film-actions">'+(listVisible.includes("statut")?'<button class="status '+f.statut+'" tabindex="-1">'+labels[f.statut]+"</button>":"")+visibilityButton(f)+infoButton(f)+"</div></div><div class="film-detail"><img class="poster" src="'+(f.thumb_url||"")+'" alt="Affiche de '+f.titre+'" loading="lazy"><div class="film-detail-body"><div class="film-detail-title">'+f.titre+'</div><div class="film-detail-meta">'+f.année+" · "+f.auteur+(f.date_vue&&f.date_vue!=="inconnue"?" · Vu le "+f.date_vue:"")+"</div>"+sourceLinks(f)+"</div></div></article>"}
-function bindListRows(){document.querySelectorAll(".film-row").forEach(row=>{if(row.dataset.bound)return;row.dataset.bound="1";const toggle=()=>{const film=row.closest(".film");const open=film.classList.toggle("open");row.setAttribute("aria-expanded",open)};row.addEventListener("click",toggle);row.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();toggle()}})})}
-function applyFilters(){const q=author.value.trim().toLowerCase(),s=statusModes[statusIndex];filtered=films.filter(f=>{const text=[f.titre,f.auteur,f.année,f.statut,labels[f.statut]].filter(v=>v!=null).join(" ").toLowerCase();return (!q||text.includes(q))&&(!s||f.statut===s)});offset=0;root.innerHTML="";renderMore()}
-function renderMore(){if(currentView==="timeline"){renderTimeline();return}const batch=filtered.slice(offset,offset+pageSize);if(offset===0&&!batch.length){root.innerHTML='<div class="empty">Aucun film.</div>';return}if(currentView==="list"){if(offset===0)root.innerHTML='<div class="grid" id="view-content"></div>';document.querySelector("#view-content").insertAdjacentHTML("beforeend",batch.map(listItem).join(""));bindListRows()}else{if(offset===0)root.innerHTML='<div class="cards" id="view-content"></div>';document.querySelector("#view-content").insertAdjacentHTML("beforeend",batch.map(card).join(""))}offset+=batch.length}
-function renderTimeline(){if(!filtered.length){root.innerHTML='<div class="empty">Aucun film.</div>';return}const years=[...new Set(filtered.map(f=>f.année))].sort((a,b)=>a-b);root.innerHTML='<div class="timeline-wrap"><div class="timeline">'+years.map(y=>'<section class="year-column"><div class="year">'+y+'</div><div class="year-films">'+filtered.filter(f=>f.année===y).map(card).join("")+"</div></section>").join("")+"</div></div>"}
-function setView(view){currentView=view;document.querySelectorAll(".view-button").forEach(b=>b.classList.toggle("active",b.dataset.view===view));applyFilters()}
-document.querySelectorAll(".view-button").forEach(b=>b.addEventListener("click",()=>setView(b.dataset.view)));
-const metaDialog=document.querySelector("#meta-dialog"),metaContent=document.querySelector("#meta-content"),metaTitle=document.querySelector("#meta-dialog-title");
-document.addEventListener("click",e=>{const info=e.target.closest("[data-info]");if(info){e.stopPropagation();const f=films.find(x=>x.id===info.dataset.info);if(f){metaTitle.textContent=f.titre;metaContent.innerHTML=metadataDialog(f);metaDialog.showModal()}return}const vis=e.target.closest("[data-visibility]");if(vis){e.stopPropagation();return}});
-document.querySelector("#meta-close").addEventListener("click",()=>metaDialog.close());metaDialog.addEventListener("click",e=>{if(e.target===metaDialog)metaDialog.close()});author.addEventListener("input",applyFilters);
-function updateStatusButton(){status.textContent=statusLabels[statusIndex];status.className="status status-filter "+(statusModes[statusIndex]||"all")}status.addEventListener("click",()=>{statusIndex=(statusIndex+1)%statusModes.length;updateStatusButton();applyFilters()});
-const observer=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&currentView!=="timeline"&&offset<filtered.length)renderMore()},{rootMargin:"400px"});observer.observe(sentinel);updateStatusButton();try{applyFilters()}catch(e){debug("ERREUR RENDU\n"+e.message+"\n"+e.stack);throw e}
-</script>
+</script>>
 </body>
 </html>
