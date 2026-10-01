@@ -43,7 +43,7 @@ h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 <script type="application/json" id="views-cards-data">{{ site.data.views.cards.visible | jsonify }}</script>
 <script>
 const labels = { seen: "Vu", to_watch: "À voir" };
-const statusSymbols = { seen: "✓", to_watch: "×" };
+
 const fieldLabels = { titre:"Titre", année:"Année", auteur:"Auteur", acteurs_principaux:"Acteurs principaux", statut:"Statut", date_vue:"Date de visionnage" };
 
 const films = JSON.parse(document.querySelector("#films-data").textContent);
@@ -88,10 +88,8 @@ function infoButton(f) {
 }
 
 function visibilityButton(f) {
-  const seen = f.statut === "seen";
-  return '<button class="visibility-button" type="button" data-visibility="' + f.id + '" aria-label="' +
-    (seen ? "Vu" : "À voir") + '" title="' + (seen ? "Vu" : "À voir") + '">' +
-    statusSymbols[f.statut] + '</button>';
+  if (f.statut !== "to_watch") return "";
+  return '<button class="visibility-button" type="button" data-visibility="' + f.id + '" aria-label="À voir" title="À voir">À voir</button>';
 }
 
 function card(f) {
@@ -180,9 +178,9 @@ function openInfo(id) {
 search?.addEventListener("input", applyFilters);
 
 statusButton?.addEventListener("click", () => {
-  statusIndex = (statusIndex + 1) % 3;
-  statusButton.textContent = ["Tous","✓","×"][statusIndex];
-  statusButton.className = "status-filter " + (statusIndex === 0 ? "all" : statusIndex === 1 ? "seen" : "to_watch");
+  statusIndex = (statusIndex + 1) % 2;
+  statusButton.textContent = statusIndex === 0 ? "Tous" : "À voir";
+  statusButton.className = "status-filter " + (statusIndex === 0 ? "all" : "to_watch");
   applyFilters();
 });
 
