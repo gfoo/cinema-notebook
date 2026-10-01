@@ -21,7 +21,7 @@ h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 .visibility-button{width:28px;height:28px;border:1px solid #d5d0c8;border-radius:50%;background:white;color:#666;font-size:15px;line-height:1;cursor:pointer;padding:0}.visibility-button:hover,.info-button:hover{background:#f0ede8}
 .meta-dialog{width:min(520px,calc(100% - 32px));border:1px solid #d5d0c8;border-radius:14px;padding:0;background:white;box-shadow:0 12px 40px #0003}.meta-dialog::backdrop{background:#0006}.meta-dialog-inner{padding:20px}.meta-dialog-header{display:flex;justify-content:space-between;align-items:center;font-size:1.2rem}.meta-dialog-header button{border:0;background:transparent;font-size:1.4rem;cursor:pointer}.meta-item{display:grid;grid-template-columns:130px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid #eee9e2}.meta-label{color:#777;font-size:.85rem}
 .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:18px}.card{background:white;border:1px solid #ddd8d0;border-radius:14px;overflow:hidden}.poster{width:100%;aspect-ratio:2/3;object-fit:cover;background:#e8e5df;display:block}.card-body{padding:12px}.card .title{font-size:1rem}.card .status{margin-top:10px;font-size:.85rem;padding:6px 10px}
-.timeline-wrap{overflow-x:auto;padding-bottom:12px}.timeline{display:flex;gap:14px;min-width:max-content;align-items:flex-start}.year-column{width:170px;flex:0 0 170px}.year{font-size:1.35rem;font-weight:700;padding:8px 4px 12px;border-bottom:2px solid #171717;margin-bottom:12px}.year-films{display:grid;gap:14px}.timeline .card{width:170px}.empty{color:#777;padding:25px 0}.sentinel{height:20px}
+.timeline-wrap{overflow-x:auto;padding-bottom:12px}.timeline{display:flex;gap:14px;min-width:max-content;align-items:flex-start}.year-column{width:170px;flex:0 0 170px}.year{font-size:1.35rem;font-weight:700;padding:8px 4px 12px;border-bottom:2px solid #171717;margin-bottom:12px}.year-films{display:grid;gap:14px}.timeline .card{width:160px;flex:0 0 160px}.empty{color:#777;padding:25px 0}.sentinel{height:20px}
 .links{margin-top:10px;display:flex;gap:6px;flex-wrap:wrap}.source-link{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border:1px solid #d5d0c8;border-radius:8px;background:white;text-decoration:none;overflow:hidden}.source-link:hover{background:#f0ede8}.source-link img{width:22px;height:22px;object-fit:cover;border-radius:6px;display:block}.source-link.imdb img{width:24px;height:24px}.source-link.tomato img{width:24px;height:24px}
 @media(max-width:650px){.view-switcher{gap:10px}.view-button{padding:7px 9px}.film-row{padding:7px 10px}.film-detail{padding:10px}.status{padding:5px 9px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>
@@ -129,11 +129,9 @@ function listItem(f) {
 
 function renderTimeline(items) {
   if (!items.length) return '<div class="empty">Aucun film</div>';
-  return '<div class="timeline">' + items.map(f =>
-    '<article class="timeline-item"><div class="timeline-year">' + f.année + '</div>' +
-    '<img class="timeline-thumb" src="' + (f.thumb_url || "") + '" alt="" loading="lazy">' +
-    '<div class="timeline-title">' + f.titre + '</div></article>'
-  ).join("") + '</div>';
+  return '<div class="timeline-wrap"><div class="timeline">' +
+    items.map(f => card(f)).join("") +
+    '</div></div>';
 }
 
 function render() {
