@@ -192,7 +192,8 @@ search?.addEventListener("input", applyFilters);
 
 statusButton?.addEventListener("click", () => {
   statusIndex = (statusIndex + 1) % 3;
-  statusButton.textContent = ["Tous","✓","×"][statusIndex];\n  statusButton.className = "status-filter " + (statusIndex === 0 ? "all" : statusIndex === 1 ? "seen" : "to_watch");
+  statusButton.textContent = ["Tous","✓","×"][statusIndex];
+  statusButton.className = "status-filter " + (statusIndex === 0 ? "all" : statusIndex === 1 ? "seen" : "to_watch");
   applyFilters();
 });
 
