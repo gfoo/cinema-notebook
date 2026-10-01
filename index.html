@@ -42,7 +42,8 @@ h1{font-size:2.3rem;margin:0 0 6px}.intro{color:#666;margin:0 0 22px}
 <script type="application/json" id="views-list-data">{{ site.data.views.list.visible | jsonify }}</script>
 <script type="application/json" id="views-cards-data">{{ site.data.views.cards.visible | jsonify }}</script>
 <script>
-const labels = { seen: "Vu", to_watch: "À voir" };\nconst statusSymbols = { seen: "✓", to_watch: "×" };
+const labels = { seen: "Vu", to_watch: "À voir" };
+const statusSymbols = { seen: "✓", to_watch: "×" };
 const fieldLabels = { titre:"Titre", année:"Année", auteur:"Auteur", acteurs_principaux:"Acteurs principaux", statut:"Statut", date_vue:"Date de visionnage" };
 
 const films = JSON.parse(document.querySelector("#films-data").textContent);
