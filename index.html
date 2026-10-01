@@ -115,7 +115,9 @@ function listItem(f) {
       (listVisible.includes("année") ? ' <span class="list-meta">(' + f.année + ')</span>' : "") +
       '</div>' : "";
   const author = listVisible.includes("auteur")
-    ? '<div class="list-meta">' + f.auteur + '</div>' : "";
+    ? '<div class="list-meta">' + f.auteur +
+      (listVisible.includes("acteurs_principaux") && f.acteurs_principaux ? ' | ' + f.acteurs_principaux : "") +
+      '</div>' : "";
   return '<article class="film" data-id="' + f.id + '">' +
     '<div class="film-row" role="button" tabindex="0" aria-expanded="false">' +
     '<div class="film-row-main"><img class="list-thumb" src="' + (f.thumb_url || "") + '" alt="" loading="lazy">' +
