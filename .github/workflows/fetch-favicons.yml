@@ -1,4 +1,5 @@
 name: Fetch favicons
+# temporary bootstrap
 
 on:
   push:
