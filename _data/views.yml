@@ -3,6 +3,7 @@ list:
     - titre
     - année
     - auteur
+    - acteurs_principaux
     - sources
 
 cards:
