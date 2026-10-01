@@ -11,6 +11,7 @@ films:
       wikipedia: https://fr.wikipedia.org/wiki/Blade_Runner_%28film%29
       imdb: https://www.imdb.com/title/tt0083658/
       rotten_tomatoes: https://www.rottentomatoes.com/m/blade_runner
+      allocine: https://www.allocine.fr/film/fichefilm_gen_cfilm=1975.html
 
   - id: blade-runner-2049
     titre: Blade Runner 2049
@@ -24,6 +25,7 @@ films:
       wikipedia: https://fr.wikipedia.org/wiki/Blade_Runner_2049
       imdb: https://www.imdb.com/title/tt1856101/
       rotten_tomatoes: https://www.rottentomatoes.com/m/blade_runner_2049
+      allocine: https://www.allocine.fr/film/fichefilm_gen_cfilm=197686.html
 
   - id: heart-of-the-beast-2026
     titre: Heart of the Beast
@@ -37,3 +39,4 @@ films:
       wikipedia: https://fr.wikipedia.org/wiki/Heart_of_the_Beast
       imdb: https://www.imdb.com/title/tt7526136/
       rotten_tomatoes: https://www.rottentomatoes.com/m/heart_of_the_beast
+      allocine: https://www.allocine.fr/film/fichefilm_gen_cfilm=1000000085.html
