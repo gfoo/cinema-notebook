@@ -163,21 +163,11 @@ function applyFilters() {
 
 function bindRows() {
   document.querySelectorAll(".film-row").forEach(row => {
-    row.addEventListener("click", event => {
-      if (event.target.closest("button,a")) return;
-      const article = row.closest(".film");
-      const open = article.classList.toggle("open");
-      row.setAttribute("aria-expanded", String(open));
-    });
-    row.addEventListener("keydown", event => {
-      if ((event.key === "Enter" || event.key === " ") && !event.target.closest("button,a")) {
-        event.preventDefault();
-        row.click();
-      }
-    });
+    row.removeAttribute("role");
+    row.removeAttribute("tabindex");
+    row.removeAttribute("aria-expanded");
   });
 }
-
 function openInfo(id) {
   const f = films.find(x => x.id === id);
   if (!f) return;
