@@ -11,4 +11,5 @@ cards:
     - titre
     - année
     - auteur
+    - acteurs_principaux
     - sources
