@@ -34,11 +34,12 @@ Chaque film utilise actuellement :
 
 ### Sources externes
 
-Conserver au maximum trois sources, lorsqu'elles sont disponibles :
+Conserver au maximum quatre sources, lorsqu'elles sont disponibles :
 
 - `sources.wikipedia`
 - `sources.imdb`
 - `sources.rotten_tomatoes`
+- `sources.allocine`
 
 Ne pas conserver d'autres liens de sources dans le catalogue sauf demande explicite de l'utilisateur.
 
@@ -121,9 +122,9 @@ Le site propose trois vues :
 - `Vignettes` : affichage par affiches/vignettes, avec défilement infini ;
 - `Frise` : années organisées en colonnes horizontales, avec défilement horizontal.
 
-Les vues Liste et Vignettes utilisent un chargement progressif côté interface. La Frise n'utilise pas le défilement infini.
+Les liens externes sont affichés sous forme de petites icônes pour Wikipedia, IMDb, Rotten Tomatoes et AlloCiné.
 
-Les liens externes sont affichés sous forme de petites icônes pour Wikipedia, IMDb et Rotten Tomatoes.
+Les vues Liste et Vignettes utilisent un chargement progressif côté interface. La Frise n'utilise pas le défilement infini.
 
 Ne pas introduire une authentification GitHub ou une API d'écriture simplement pour ajouter des boutons d'édition. ChatGPT peut modifier le dépôt directement lorsque l'utilisateur lui demande de modifier le catalogue.
 
