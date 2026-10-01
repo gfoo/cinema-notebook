@@ -3,9 +3,11 @@ list:
     - titre
     - année
     - auteur
+    - sources
 
 cards:
   visible:
     - titre
     - année
     - auteur
+    - sources
