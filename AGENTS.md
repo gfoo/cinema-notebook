@@ -27,7 +27,7 @@ Chaque film utilise actuellement :
 - `année`
 - `auteur` : réalisateur
 - `acteurs_principaux` : noms séparés par des virgules
-- `synopsis` : résumé court du film
+- `synopsis` : résumé court du film, de 60 à 80 mots
 - `statut`
 - `date_vue`
 - `thumb_url`
