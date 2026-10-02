@@ -90,7 +90,7 @@ films:
       allocine: https://www.allocine.fr/film/fichefilm_gen_cfilm=61282.html
 
   - id: avatar-the-way-of-water-2022
-    titre: Avatar : La Voie de l'eau
+    titre: "Avatar : La Voie de l'eau"
     année: 2022
     auteur: James Cameron
     acteurs_principaux: Sam Worthington, Zoe Saldaña, Sigourney Weaver
@@ -105,7 +105,7 @@ films:
       allocine: https://www.allocine.fr/film/fichefilm_gen_cfilm=178014.html
 
   - id: avatar-fire-and-ash-2025
-    titre: Avatar : De feu et de cendres
+    titre: "Avatar : De feu et de cendres"
     année: 2025
     auteur: James Cameron
     acteurs_principaux: Sam Worthington, Zoe Saldaña, Sigourney Weaver
