@@ -58,3 +58,63 @@ films:
       imdb: https://www.imdb.com/title/tt0088247/
       rotten_tomatoes: https://www.rottentomatoes.com/m/terminator
       allocine: https://www.allocine.fr/film/fichefilm_gen_cfilm=309.html
+
+  - id: abyss-1989
+    titre: Abyss
+    année: 1989
+    auteur: James Cameron
+    acteurs_principaux: Ed Harris, Mary Elizabeth Mastrantonio, Michael Biehn
+    synopsis: Après le naufrage mystérieux d'un sous-marin nucléaire, une équipe de plongeurs civils travaillant sur une plateforme sous-marine est réquisitionnée pour participer aux recherches. Alors que les tensions montent entre les techniciens et les militaires, Bud Brigman, Lindsey Brigman et leurs équipiers découvrent une présence inconnue dans les profondeurs. Leur mission de récupération se transforme en une confrontation avec un phénomène qui dépasse tout ce qu'ils imaginaient.
+    statut: seen
+    date_vue: inconnue
+    thumb_url: https://www.impawards.com/1989/posters/abyss.jpg
+    sources:
+      wikipedia: https://fr.wikipedia.org/wiki/Abyss_(film)
+      imdb: https://www.imdb.com/title/tt0096754/
+      rotten_tomatoes: https://www.rottentomatoes.com/m/abyss
+      allocine: https://www.allocine.fr/film/fichefilm_gen_cfilm=4992.html
+
+  - id: avatar-2009
+    titre: Avatar
+    année: 2009
+    auteur: James Cameron
+    acteurs_principaux: Sam Worthington, Zoe Saldaña, Sigourney Weaver
+    synopsis: Sur la lune Pandora, Jake Sully, ancien marine paraplégique, prend la place de son frère décédé au sein du programme Avatar. Son esprit est transféré dans un corps Na'vi conçu pour permettre aux humains d'explorer une planète dont l'atmosphère leur est toxique. Chargé de gagner la confiance des habitants au profit d'une exploitation minière, Jake se rapproche de Neytiri et remet progressivement en question la mission qui lui a été confiée.
+    statut: seen
+    date_vue: inconnue
+    thumb_url: https://m.media-amazon.com/images/M/MV5BMDEzMmQwZjctZWU2My00MWNlLWE0NjItMDJlYTRlNGJiZjcyXkEyXkFqcGc@._V1_SX300.jpg
+    sources:
+      wikipedia: https://fr.wikipedia.org/wiki/Avatar_(film,_2009)
+      imdb: https://www.imdb.com/title/tt0499549/
+      rotten_tomatoes: https://www.rottentomatoes.com/m/avatar
+      allocine: https://www.allocine.fr/film/fichefilm_gen_cfilm=61282.html
+
+  - id: avatar-the-way-of-water-2022
+    titre: Avatar : La Voie de l'eau
+    année: 2022
+    auteur: James Cameron
+    acteurs_principaux: Sam Worthington, Zoe Saldaña, Sigourney Weaver
+    synopsis: Plus d'une décennie après les événements du premier film, Jake Sully et Neytiri vivent avec leurs enfants au sein des Na'vi. Lorsque la menace humaine revient sur Pandora, la famille doit quitter la forêt et chercher refuge auprès du peuple des Metkayina, installé sur les récifs. Entre adaptation à un nouvel environnement, tensions familiales et affrontements, Jake tente de protéger les siens tout en affrontant les conséquences de son passé.
+    statut: seen
+    date_vue: inconnue
+    thumb_url: https://m.media-amazon.com/images/M/MV5BNWI0Y2NkOWEtMmM2OC00MjQ3LWI1YzItZGQxYzQ3NzI4NWZmXkEyXkFqcGc@._V1_SX300.jpg
+    sources:
+      wikipedia: https://fr.wikipedia.org/wiki/Avatar_:_La_Voie_de_l%27eau
+      imdb: https://www.imdb.com/title/tt1630029/
+      rotten_tomatoes: https://www.rottentomatoes.com/m/avatar_the_way_of_water
+      allocine: https://www.allocine.fr/film/fichefilm_gen_cfilm=178014.html
+
+  - id: avatar-fire-and-ash-2025
+    titre: Avatar : De feu et de cendres
+    année: 2025
+    auteur: James Cameron
+    acteurs_principaux: Sam Worthington, Zoe Saldaña, Sigourney Weaver
+    synopsis: Quelques semaines après les événements d'Avatar : La Voie de l'eau, Jake Sully et sa famille vivent toujours parmi les Metkayina sur Pandora. Ils doivent faire face au deuil après la mort de Neteyam et aux tensions provoquées par la présence humaine. Leur situation se complique avec l'apparition du Peuple des Cendres, un clan Na'vi vivant dans une région volcanique. Jake, Neytiri et leurs proches sont entraînés dans un nouveau conflit autour de Pandora.
+    statut: seen
+    date_vue: inconnue
+    thumb_url: https://m.media-amazon.com/images/M/MV5BZDYxY2I1OGMtN2Y4MS00ZmU1LTgyNDAtODA0MzAyYjI0N2Y2XkEyXkFqcGc%40._V1_FMjpg_UX1000_.jpg
+    sources:
+      wikipedia: https://fr.wikipedia.org/wiki/Avatar_:_De_feu_et_de_cendres
+      imdb: https://www.imdb.com/title/tt1757678/
+      rotten_tomatoes: https://www.rottentomatoes.com/m/avatar_fire_and_ash
+      allocine: https://www.allocine.fr/film/fichefilm_gen_cfilm=187247.html
