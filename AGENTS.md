@@ -27,6 +27,7 @@ Chaque film utilise actuellement :
 - `année`
 - `auteur` : réalisateur
 - `acteurs_principaux` : noms séparés par des virgules
+- `synopsis` : résumé court du film
 - `statut`
 - `date_vue`
 - `thumb_url`
