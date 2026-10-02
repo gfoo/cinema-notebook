@@ -33,6 +33,15 @@ Chaque film utilise actuellement :
 - `thumb_url`
 - `sources` : liens externes structurés
 
+
+### Vignettes (`thumb_url`)
+
+- Utiliser **l'image/thumbnail hébergée par IMDb** pour chaque film.
+- La valeur de `thumb_url` doit être une **URL directe vers l'image IMDb** (`m.media-amazon.com`), et non l'URL de la fiche IMDb, de Wikipedia, d'IMP Awards ou d'une autre base.
+- Lorsqu'un film est ajouté, récupérer l'image principale affichée par IMDb et utiliser son URL directe.
+- Ne pas utiliser une autre source d'image simplement parce qu'elle est plus facile à trouver.
+- Vérifier que l'URL pointe bien vers une image avant de la mettre dans le catalogue.
+
 ### Sources externes
 
 Conserver au maximum quatre sources, lorsqu'elles sont disponibles :
