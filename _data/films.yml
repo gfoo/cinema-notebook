@@ -4,6 +4,7 @@ films:
     année: 1982
     auteur: Ridley Scott
     acteurs_principaux: Harrison Ford, Rutger Hauer, Sean Young
+    synopsis: Dans un Los Angeles futuriste, Rick Deckard, ancien blade runner, est chargé de traquer quatre réplicants fugitifs revenus sur Terre. Son enquête, notamment sa rencontre avec Rachael, l’amène à questionner la frontière entre humains et êtres artificiels.
     statut: seen
     date_vue: inconnue
     thumb_url: https://image.tmdb.org/t/p/w300_and_h450_bestv2/63N9uy8nd9j7Eog2axPQ8lbr3Wj.jpg
@@ -18,6 +19,7 @@ films:
     année: 2017
     auteur: Denis Villeneuve
     acteurs_principaux: Ryan Gosling, Harrison Ford, Ana de Armas
+    synopsis: En 2049, K, un blade runner réplicant du LAPD, découvre un secret capable de bouleverser l’équilibre entre humains et réplicants. Son enquête le conduit sur les traces de Rachael et de Rick Deckard, disparu depuis des années.
     statut: seen
     date_vue: inconnue
     thumb_url: https://image.tmdb.org/t/p/w300_and_h450_bestv2/gajva2L0rPYkEWjzgFlBXCAVBE5.jpg
@@ -32,6 +34,7 @@ films:
     année: 2026
     auteur: David Ayer
     acteurs_principaux: Brad Pitt, J.K. Simmons, Anna Lambe
+    synopsis: Après un terrible crash d’avion, James Belmont, ancien membre des forces spéciales, se retrouve isolé en Alaska avec son chien de combat Odin. Tous deux doivent survivre dans une nature hostile et puiser dans leur lien pour affronter cette épreuve.
     statut: to_watch
     date_vue: inconnue
     thumb_url: https://media.senscritique.com/media/000023867590/0/heart_of_the_beast.jpg
