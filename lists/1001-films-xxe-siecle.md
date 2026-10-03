@@ -1,6 +1,10 @@
 # 1001 films — XXe siècle
 
-Source de travail : *1001 Films à voir avant de mourir* (*1001 Movies You Must See Before You Die*).
+Source de travail : *1001 Films à voir avant de mourir*, **13e édition française (2024)**, sous la direction de Steven Jay Schneider.
+
+La 13e édition française est parue le 31 octobre 2024 chez Omnibus. Le livre contient 1001 fiches, classées chronologiquement ; le premier film est *Le Voyage dans la Lune* (1902) et le dernier *Sans jamais nous connaître* (2023). citeturn14search0turn14search1
+
+Pour la constitution de cette liste de travail, la liste SensCritique correspondant à l'édition 2024 est utilisée comme index de référence. Elle comporte 1014 entrées car elle intègre 15 films supplémentaires liés aux différences entre les éditions française et américaine. citeturn5search1
 
 ## Légende
 
@@ -12,14 +16,13 @@ Source de travail : *1001 Films à voir avant de mourir* (*1001 Movies You Must 
 
 - Périmètre : films sortis de **1900 à 1999** inclus.
 - Les films du XXIe siècle sont exclus de cette liste de travail.
-- Les films seront ensuite ajoutés dans `_data/films.yml`.
+- Les statuts seront renseignés au fil des échanges avec l'utilisateur.
+- Les films retenus seront ensuite ajoutés dans `_data/films.yml`.
 - Pour chaque film retenu, conserver les informations utiles au repo : titre, année, réalisateur, acteurs, synopsis, statut et sources.
-- La miniature devra utiliser une **image IMDb**, conformément à la règle du projet.
-- Cette liste sert de référence de travail : les cases seront mises à jour au fil de nos échanges.
+- La miniature devra utiliser une **image IMDb**, conformément à `AGENTS.md`.
+- Cette liste est une liste de travail : les cases seront mises à jour au fil de nos échanges.
 
 ## Découpage
-
-La liste sera organisée par décennies pour faciliter la lecture et le suivi.
 
 ### 1900–1909
 
@@ -68,4 +71,9 @@ _Aucun film ajouté pour le moment._
 - À voir : **0**
 - Ignoré : **0**
 
-> La liste détaillée sera ajoutée ici à partir de la liste fournie pour le projet, puis utilisée comme source de travail pour les ajouts dans `_data/films.yml`.
+## Sources
+
+- Édition française 2024 : ISBN/EAN **9782258209749**, Omnibus, 31 octobre 2024. citeturn14search0turn14search1
+- Index de travail de l'édition 2024 : liste SensCritique de 1014 entrées. citeturn5search1
+
+> Important : la liste détaillée n'est pas encore remplie. Je préfère ne pas mélanger silencieusement l'édition 2021 avec l'édition 2024 : les éditions évoluent et la liste de référence doit rester cohérente avec l'édition choisie.
