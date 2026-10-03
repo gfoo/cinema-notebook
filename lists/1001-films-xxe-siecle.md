@@ -1,40 +1,39 @@
 # 1001 films — XXe siècle
 
-Liste de travail pour le **XXe siècle (1900–1999)**.
-
-## Source
-
-La liste de référence visée est l'édition française 2024 de *1001 Films à voir avant de mourir*, 13e édition française publiée chez Omnibus.
-
-Pour construire le fichier sans scanner le livre, j'utilise comme **index de reconstruction en ligne** le site JoubJoub, qui propose un index chronologique des films et des pages par édition. Cet index permet de reconstruire le corpus par année, mais il n'est **pas garanti identique à l'édition française 2024**. La liste 2024 française reste la référence à contrôler lors de la consolidation. urlIndex chronologique JoubJoubhttps://joubjoub.fr/1001films/index-par-decennie/
-
-La page SensCritique de l'édition française 2024 reste utilisée comme contrôle de référence ; elle contient 1 014 entrées, en raison notamment de différences entre éditions française et américaine. urlListe SensCritique — édition 2024https://www.senscritique.com/liste/1001_films_a_voir_avant_de_mourir_edition_2024/1584121
+Source de travail : *1001 Films à voir avant de mourir* (*1001 Movies You Must See Before You Die*).
 
 ## Légende
 
-- [ ] **À voir**
-- [x] **Vu**
-- [~] **Ignorer**
+- [ ] **À voir** — film à regarder
+- [x] **Vu** — film déjà vu
+- [~] **Ignorer** — film volontairement écarté de la sélection
 
-## Périmètre
+## Règles de sélection
 
-Uniquement les films dont l'année de sortie est comprise entre **1900 et 1999 inclus**.
+- Périmètre : films sortis de **1900 à 1999** inclus.
+- Les films du XXIe siècle sont exclus de cette liste de travail.
+- Les films seront ensuite ajoutés dans `_data/films.yml`.
+- Pour chaque film retenu, conserver les informations utiles au repo : titre, année, réalisateur, acteurs, synopsis, statut et sources.
+- La miniature devra utiliser une **image IMDb**, conformément à la règle du projet.
+- Cette liste sert de référence de travail : les cases seront mises à jour au fil de nos échanges.
 
-Les films du XXIe siècle ne font pas partie de ce fichier.
+## Découpage
 
-## 1900–1909
+La liste sera organisée par décennies pour faciliter la lecture et le suivi.
+
+### 1900–1909
 
 - [ ] Le Voyage dans la Lune — 1902
 - [ ] Le Vol du grand rapide — 1903
 
-## 1910–1919
+### 1910–1919
 
 - [ ] Les Vampires — 1915
 - [ ] Naissance d’une nation — 1915
 - [ ] Intolérance — 1916
 - [ ] Le Lys brisé — 1919
 
-## 1920–1929
+### 1920–1929
 
 - [ ] À travers l’orage — 1920
 - [ ] Le Cabinet du docteur Caligari — 1920
@@ -81,38 +80,39 @@ Les films du XXIe siècle ne font pas partie de ce fichier.
 - [ ] Loulou — 1929
 - [ ] Un chien andalou — 1929
 
-## 1930–1939
+### 1930–1939
 
-_Index en cours de reconstruction._
+_Aucun film ajouté pour le moment._
 
-## 1940–1949
+### 1940–1949
 
-_Index en cours de reconstruction._
+_Aucun film ajouté pour le moment._
 
-## 1950–1959
+### 1950–1959
 
-_Index en cours de reconstruction._
+_Aucun film ajouté pour le moment._
 
-## 1960–1969
+### 1960–1969
 
-_Index en cours de reconstruction._
+_Aucun film ajouté pour le moment._
 
-## 1970–1979
+### 1970–1979
 
-_Index en cours de reconstruction._
+_Aucun film ajouté pour le moment._
 
-## 1980–1989
+### 1980–1989
 
-_Index en cours de reconstruction._
+_Aucun film ajouté pour le moment._
 
-## 1990–1999
+### 1990–1999
 
-_Index en cours de reconstruction._
+_Aucun film ajouté pour le moment._
 
-## Important
+## Compteur
 
-Ce fichier est volontairement présenté comme une **liste de travail** tant que les différences entre l'index en ligne et l'édition française 2024 n'ont pas été entièrement recoupées.
+- Total de films dans cette liste : **45**
+- Vu : **0**
+- À voir : **45**
+- Ignoré : **0**
 
-Les statuts `[x]`, `[ ]` et `[~]` seront modifiés au fil de nos échanges.
-
-Les films confirmés seront ensuite ajoutés à `_data/films.yml` selon les règles de `AGENTS.md`, notamment avec une miniature IMDb.
+> La liste détaillée sera ajoutée ici à partir de la liste fournie pour le projet, puis utilisée comme source de travail pour les ajouts dans `_data/films.yml`.
